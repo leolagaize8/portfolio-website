@@ -67,8 +67,9 @@ export function Hero() {
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           className="mb-7"
         >
-          <div className="flex h-[120px] w-[120px] items-center justify-center rounded-full border border-border bg-white/80 shadow-lg backdrop-blur-sm" style={{ outline: '3px solid rgba(30,58,95,0.12)', outlineOffset: '3px' }}>
-            <span className="text-[64px] leading-none select-none">👨🏽‍💻</span>
+          <div className="h-[120px] w-[120px] overflow-hidden rounded-full border-2 border-border shadow-lg" style={{ outline: '3px solid rgba(30,58,95,0.12)', outlineOffset: '3px' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/profile.jpg" alt="Leo Lagaize" className="h-full w-full object-cover" style={{ objectPosition: '50% 28%' }} />
           </div>
         </motion.div>
 
@@ -77,7 +78,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-4 font-heading text-[clamp(3rem,7vw,5.5rem)] font-bold leading-none tracking-tight"
+          className="mb-4 font-display text-[clamp(3rem,7vw,5.5rem)] font-bold leading-none tracking-tight"
           style={{ color: '#1e3a5f' }}
         >
           Leo Lagaize

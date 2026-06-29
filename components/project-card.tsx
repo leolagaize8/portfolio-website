@@ -65,7 +65,7 @@ const toolIcons: Record<string, IconDef> = {
   'RAG':           { type: 'text', initials: 'RAG' },
 }
 
-function ToolIcon({ name }: { name: string }) {
+export function ToolIcon({ name }: { name: string }) {
   const def = toolIcons[name]
 
   return (
@@ -98,9 +98,10 @@ interface ProjectCardProps {
   project: Project
   employer: Employer
   onClick: () => void
+  showEmployerLogo?: boolean
 }
 
-export function ProjectCard({ project, employer, onClick }: ProjectCardProps) {
+export function ProjectCard({ project, employer, onClick, showEmployerLogo }: ProjectCardProps) {
   return (
     <button onClick={onClick} className="group h-full w-full text-left">
       <Card
@@ -113,12 +114,23 @@ export function ProjectCard({ project, employer, onClick }: ProjectCardProps) {
         <CardContent className="flex flex-1 flex-col p-0">
           {/* Photo zone */}
           <div className={cn(
-            'flex h-40 items-center justify-center bg-gradient-to-br',
+            'relative flex h-40 items-center justify-center bg-gradient-to-br',
             photoZoneBg[employer.color],
           )}>
             <div className="flex flex-col items-center gap-2 opacity-30">
               <Monitor size={28} strokeWidth={1} />
             </div>
+            {showEmployerLogo && (
+              <div className="absolute top-2 right-2 flex items-center rounded-md bg-white/90 px-2 py-1 shadow-sm backdrop-blur-sm">
+                {employer.id === 'hexa-scale' ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src="/hexa-logo.svg" alt="Hexa Scale" className="h-4 w-auto" />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src="/newfund-logo.png" alt="Newfund" className="h-3.5 w-auto" />
+                )}
+              </div>
+            )}
           </div>
 
           {/* Header row */}
@@ -135,7 +147,7 @@ export function ProjectCard({ project, employer, onClick }: ProjectCardProps) {
 
           {/* Title + description */}
           <div className="flex flex-1 flex-col px-5 pb-5">
-            <h3 className="mb-2 text-[17px] font-semibold leading-snug tracking-tight text-foreground">
+            <h3 className="mb-2 font-heading text-[17px] font-bold leading-snug tracking-tight text-foreground">
               {project.title}
             </h3>
             <p className="mb-5 line-clamp-3 text-[13px] leading-relaxed text-muted-foreground">

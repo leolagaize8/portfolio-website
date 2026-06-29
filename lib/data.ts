@@ -62,7 +62,7 @@ export const employers: Employer[] = [
         title: 'Scale Sourcing',
         category: 'webapp',
         description:
-          'Full-stack sourcing platform automating the entire B2B pipeline from LinkedIn search to AI scoring, enrichment, and outreach. Multi-user, shipped solo.',
+          'Full-stack sourcing platform automating the entire B2B pipeline from LinkedIn search to AI scoring, enrichment, and outreach. In production, multi-user, 6 tools+ integrated.',
         apps: ['Next.js', 'N8N', 'PhantomBuster', 'OpenAI', 'FullEnrich', 'Lemlist'],
         detail: {
           problem:

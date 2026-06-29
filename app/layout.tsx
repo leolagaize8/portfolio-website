@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Instrument_Sans, Cormorant } from 'next/font/google'
+import { Instrument_Sans, Plus_Jakarta_Sans, Cormorant } from 'next/font/google'
 import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 
@@ -7,6 +7,13 @@ const instrumentSans = Instrument_Sans({
   subsets: ['latin'],
   variable: '--font-instrument-sans',
   display: 'swap',
+})
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-plus-jakarta',
+  display: 'swap',
+  weight: ['400', '600', '700', '800'],
 })
 
 const cormorant = Cormorant({
@@ -26,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${instrumentSans.variable} ${cormorant.variable} ${GeistMono.variable} font-sans antialiased`}
+        className={`${instrumentSans.variable} ${plusJakartaSans.variable} ${cormorant.variable} ${GeistMono.variable} font-sans antialiased`}
       >
         {children}
       </body>

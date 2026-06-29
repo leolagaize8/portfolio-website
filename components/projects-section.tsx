@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { employers } from '@/lib/data'
 import type { Project, Employer } from '@/lib/data'
-import { EmployerBlock } from './employer-block'
+import { ScaleSourcingFeature } from './scale-sourcing-feature'
+import { AutomationsBlock } from './automations-block'
 import { ProjectSheet } from './project-sheet'
 
 export function ProjectsSection() {
@@ -21,8 +22,17 @@ export function ProjectsSection() {
     setTimeout(() => setModalData(null), 300)
   }
 
+  const hexaEmployer = employers[0]
+  const scaleSourcing = hexaEmployer.projects[0] // id: 'scale-sourcing'
+
+  const automationItems = [
+    ...hexaEmployer.projects.slice(1).map((p) => ({ project: p, employer: hexaEmployer })),
+    ...employers[1].projects.map((p) => ({ project: p, employer: employers[1] })),
+  ]
+
   return (
     <section id="projects" className="pt-24 pb-36 scroll-mt-20">
+      {/* Section header */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -36,15 +46,20 @@ export function ProjectsSection() {
         </h2>
       </motion.div>
 
-      <div>
-        {employers.map((employer) => (
-          <EmployerBlock
-            key={employer.id}
-            employer={employer}
-            onProjectClick={(project) => openModal(project, employer)}
-          />
-        ))}
+      {/* Scale Sourcing — featured */}
+      <div className="mb-20">
+        <ScaleSourcingFeature
+          project={scaleSourcing}
+          employer={hexaEmployer}
+          onOpen={() => openModal(scaleSourcing, hexaEmployer)}
+        />
       </div>
+
+      {/* Automations & Tools */}
+      <AutomationsBlock
+        items={automationItems}
+        onProjectClick={openModal}
+      />
 
       {modalData && (
         <ProjectSheet

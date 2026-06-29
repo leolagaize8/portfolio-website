@@ -77,22 +77,6 @@ export function AboutSection() {
               <img src="/profile-1.jpg" alt="" className="h-full w-full object-cover object-center" />
             </motion.div>
 
-            {/* Profile — center front */}
-            <motion.div
-              style={{ y: y2 }}
-              whileHover={{ scale: 1.04 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-              className="absolute top-[134px] left-[134px] z-30 h-[282px] w-[282px] cursor-pointer overflow-hidden rounded-full ring-[3px] ring-background"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/profile.jpg"
-                alt="Leo Lagaize"
-                className="h-full w-full object-cover"
-                style={{ objectPosition: '50% 28%' }}
-              />
-            </motion.div>
-
             {/* Sunset — bottom right */}
             <motion.div
               style={{ y: y3 }}
