@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowRight, Play } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import type { Project, Employer } from '@/lib/data'
 
 interface ScaleSourcingFeatureProps {
@@ -201,23 +201,13 @@ export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeaturePr
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col items-center gap-4"
           >
-            <div className="group relative w-full aspect-video overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-indigo-500/5" />
-
-              {/* Corner decorations */}
-              <div className="absolute left-4 top-4 h-5 w-5 border-l border-t border-white/15" />
-              <div className="absolute right-4 top-4 h-5 w-5 border-r border-t border-white/15" />
-              <div className="absolute bottom-4 left-4 h-5 w-5 border-b border-l border-white/15" />
-              <div className="absolute bottom-4 right-4 h-5 w-5 border-b border-r border-white/15" />
-
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/15 bg-white/8 backdrop-blur-sm transition-all group-hover:border-white/30 group-hover:bg-white/12">
-                  <Play size={20} className="ml-1 text-white/50 transition-colors group-hover:text-white/75" strokeWidth={1.5} fill="currentColor" />
-                </div>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-white/20">
-                  Demo coming soon
-                </span>
-              </div>
+            <div className="w-full overflow-hidden rounded-2xl border border-white/10 bg-black">
+              <video
+                src="/scale-sourcing-demo.mp4"
+                controls
+                playsInline
+                className="w-full"
+              />
             </div>
 
           </motion.div>
