@@ -128,8 +128,8 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                     transition={{ duration: 0.4, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
                   >
                     <h3
-                      className="mb-3 text-[1.15rem] font-bold tracking-tight"
-                      style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}
+                      className="mb-3 font-mono text-[1.15rem] font-normal leading-none tracking-tight"
+                      style={{ color: '#1e3a5f' }}
                     >
                       {label}
                     </h3>
@@ -187,7 +187,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="mb-10"
               >
-                <h3 className="mb-4 text-[1.15rem] font-bold tracking-tight" style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}>
+                <h3 className="mb-4 font-mono text-[1.15rem] font-normal leading-none tracking-tight" style={{ color: '#1e3a5f' }}>
                   Pipeline
                 </h3>
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
@@ -212,7 +212,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="pb-20"
               >
-                <h3 className="mb-4 text-[1.15rem] font-bold tracking-tight" style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}>
+                <h3 className="mb-4 font-mono text-[1.15rem] font-normal leading-none tracking-tight" style={{ color: '#1e3a5f' }}>
                   Stack
                 </h3>
                 <div className="flex flex-wrap gap-2">
