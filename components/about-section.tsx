@@ -137,8 +137,9 @@ export function AboutSection() {
                       <p className="text-[14px] font-medium text-foreground">{exp.role}</p>
                       <span className="rounded-full border border-border px-2 py-0.5 font-mono text-[9px] text-muted-foreground/60">{exp.tag}</span>
                     </div>
-                    <p className="text-[12px] text-muted-foreground">{exp.company} · {exp.period}</p>
+                    <p className="text-[12px] text-muted-foreground">{exp.company}</p>
                   </div>
+                  <p className="shrink-0 font-mono text-[11px] text-muted-foreground/50">{exp.period}</p>
                 </motion.div>
               ))}
             </div>
