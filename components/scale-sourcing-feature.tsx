@@ -150,7 +150,7 @@ export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeaturePr
       />
       <div className="pointer-events-none absolute -right-40 -top-40 h-[500px] w-[500px] rounded-full bg-blue-600/15 blur-[120px]" />
 
-      <div className="relative px-[max(1.5rem,calc((100vw-64rem)/2+1.5rem))] pt-20 pb-14">
+      <div className="relative px-10 pt-14 pb-12">
 
         {/* Top: two columns */}
         <div className="mb-16 grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
