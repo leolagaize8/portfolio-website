@@ -47,15 +47,6 @@ function FullWidthPipeline() {
           <div className="flex flex-1 flex-col items-center gap-3 px-2">
             {/* Node */}
             <div className="relative flex h-10 w-10 items-center justify-center">
-              {i === activeStep && (
-                <motion.div
-                  key={`ring-${activeStep}`}
-                  className="absolute inset-0 rounded-full border border-blue-400/40"
-                  initial={{ scale: 0.8, opacity: 1 }}
-                  animate={{ scale: 2.2, opacity: 0 }}
-                  transition={{ duration: 1.1, ease: 'easeOut' }}
-                />
-              )}
               <motion.div
                 className="h-3.5 w-3.5 rounded-full"
                 animate={{
@@ -162,9 +153,18 @@ export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeaturePr
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="mb-8 font-mono text-[11px] uppercase tracking-widest text-white/25">
-              Hexa Scale · Operating System
-            </p>
+            <div className="mb-8 flex items-center justify-between">
+              <p className="font-mono text-[11px] uppercase tracking-widest text-white/25">
+                Hexa Scale · Sourcing Platform
+              </p>
+              <button
+                onClick={onOpen}
+                className="group inline-flex items-center gap-2.5 border border-white/20 px-5 py-2.5 text-[12px] font-medium text-white/60 transition-all hover:border-white/50 hover:text-white"
+              >
+                View project
+                <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+              </button>
+            </div>
 
             <h3 className="mb-5 font-heading text-[clamp(2.2rem,4vw,3.6rem)] font-extrabold leading-[0.95] tracking-tight text-white">
               Scale<br />Sourcing
@@ -224,15 +224,6 @@ export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeaturePr
 
           <FullWidthPipeline />
 
-          <div className="mt-10 flex justify-end">
-            <button
-              onClick={onOpen}
-              className="group inline-flex items-center gap-2.5 border border-white/20 px-5 py-2.5 text-[12px] font-medium text-white/60 transition-all hover:border-white/50 hover:text-white"
-            >
-              View project
-              <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
-            </button>
-          </div>
         </motion.div>
 
       </div>
