@@ -47,7 +47,7 @@ export function ProjectsSection() {
       </motion.div>
 
       {/* Scale Sourcing — featured */}
-      <div className="mb-12">
+      <div className="mb-12 mx-auto max-w-7xl px-8 lg:px-16">
         <ScaleSourcingFeature
           project={scaleSourcing}
           employer={hexaEmployer}
