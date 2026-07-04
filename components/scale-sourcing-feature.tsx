@@ -139,7 +139,7 @@ function FullWidthPipeline() {
 
 export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeatureProps) {
   return (
-    <div className="relative overflow-hidden bg-[#0d1f38]">
+    <div className="relative overflow-hidden rounded-2xl bg-[#0d1f38] mx-[max(1.5rem,calc((100vw-64rem)/2+1.5rem))]">
 {/* Dot grid */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.04]"
