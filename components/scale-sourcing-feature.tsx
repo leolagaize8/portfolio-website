@@ -140,9 +140,7 @@ function FullWidthPipeline() {
 export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeatureProps) {
   return (
     <div className="relative overflow-hidden bg-[#0d1f38]">
-      {/* Top fade from page background */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[oklch(0.91_0.018_240)] to-transparent" />
-      {/* Dot grid */}
+{/* Dot grid */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.04]"
         style={{
