@@ -34,9 +34,9 @@ export function Background() {
           width: 600,
           height: 600,
           transform: 'translate(-50%, -50%)',
-          background: 'radial-gradient(circle, rgba(96,165,250,0.18) 0%, rgba(99,102,241,0.08) 35%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(59,130,246,0.35) 0%, rgba(99,102,241,0.18) 30%, rgba(147,197,253,0.08) 55%, transparent 70%)',
           borderRadius: '50%',
-          filter: 'blur(8px)',
+          filter: 'blur(12px)',
         }}
       />
     </div>
