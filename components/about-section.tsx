@@ -6,10 +6,10 @@ const experiences = [
   {
     initials: 'HS',
     logo: '/logo-hexa-shape.svg',
-    logoBg: 'bg-black',
+    logoBg: 'bg-white',
     color: 'bg-purple-100 text-purple-700',
     role: 'Software Investor',
-    company: 'Hexa Scale',
+    company: 'Hexa',
     period: 'Jan 2026 to present',
     tag: 'Internship',
   },

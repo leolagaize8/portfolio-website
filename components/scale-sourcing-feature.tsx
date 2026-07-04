@@ -166,7 +166,7 @@ export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeaturePr
               Hexa Scale · Operating System
             </p>
 
-            <h3 className="mb-5 font-heading text-[clamp(3rem,5.5vw,5rem)] font-extrabold leading-[0.9] tracking-tight text-white">
+            <h3 className="mb-5 font-heading text-[clamp(2.2rem,4vw,3.6rem)] font-extrabold leading-[0.95] tracking-tight text-white">
               Scale<br />Sourcing
             </h3>
 
