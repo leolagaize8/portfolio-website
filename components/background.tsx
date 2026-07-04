@@ -1,51 +1,43 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
 
 export function Background() {
-  const [mouse, setMouse] = useState({ x: 0, y: 0 })
+  const [pos, setPos] = useState({ x: -999, y: -999 })
+  const rafRef = useRef<number>(0)
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      setMouse({
-        x: (e.clientX / window.innerWidth - 0.5) * 280,
-        y: (e.clientY / window.innerHeight - 0.5) * 280,
+      cancelAnimationFrame(rafRef.current)
+      rafRef.current = requestAnimationFrame(() => {
+        setPos({ x: e.clientX, y: e.clientY })
       })
     }
     window.addEventListener('mousemove', onMove)
-    return () => window.removeEventListener('mousemove', onMove)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      cancelAnimationFrame(rafRef.current)
+    }
   }, [])
-
-  const spring = (factor: number) => ({
-    type: 'spring' as const,
-    stiffness: 40,
-    damping: 20,
-    x: mouse.x * factor,
-    y: mouse.y * factor,
-  })
 
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <motion.div
-        animate={{ x: mouse.x * 1, y: mouse.y * 1 }}
-        transition={{ type: 'spring', stiffness: 40, damping: 20 }}
-        className="absolute -left-40 -top-20 h-[550px] w-[550px] rounded-full bg-blue-200/70 blur-[100px]"
-      />
-      <motion.div
-        animate={{ x: mouse.x * -0.8, y: mouse.y * -0.8 }}
-        transition={{ type: 'spring', stiffness: 35, damping: 22 }}
-        className="absolute -right-40 top-1/4 h-[500px] w-[500px] rounded-full bg-indigo-200/60 blur-[100px]"
-      />
-      <motion.div
-        animate={{ x: mouse.x * 1.3, y: mouse.y * 0.7 }}
-        transition={{ type: 'spring', stiffness: 45, damping: 18 }}
-        className="absolute bottom-0 left-1/4 h-[400px] w-[400px] rounded-full bg-sky-100/80 blur-[90px]"
-      />
-      <motion.div
-        animate={{ x: mouse.x * -0.6, y: mouse.y * 1.2 }}
-        transition={{ type: 'spring', stiffness: 30, damping: 25 }}
-        className="absolute right-1/3 top-0 h-[300px] w-[300px] rounded-full bg-blue-100/60 blur-[80px]"
+      {/* Static base gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[oklch(0.91_0.018_240)] via-[oklch(0.93_0.012_235)] to-[oklch(0.91_0.018_240)]" />
+
+      {/* Cursor spotlight */}
+      <div
+        className="absolute transition-opacity duration-300"
+        style={{
+          left: pos.x,
+          top: pos.y,
+          width: 600,
+          height: 600,
+          transform: 'translate(-50%, -50%)',
+          background: 'radial-gradient(circle, rgba(96,165,250,0.18) 0%, rgba(99,102,241,0.08) 35%, transparent 70%)',
+          borderRadius: '50%',
+          filter: 'blur(8px)',
+        }}
       />
     </div>
   )
