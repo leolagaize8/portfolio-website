@@ -63,13 +63,13 @@ export const employers: Employer[] = [
         title: 'Scale Sourcing',
         category: 'webapp',
         description:
-          'Full-stack sourcing platform automating the entire B2B pipeline from LinkedIn search to AI scoring, enrichment, and outreach. In production, multi-user, 6 tools+ integrated.',
-        apps: ['Next.js', 'N8N', 'PhantomBuster', 'OpenAI', 'FullEnrich', 'Lemlist'],
+          'Full-stack sourcing platform with two automated flows — net-new prospect scoring from LinkedIn, and CRM re-engagement from Attio. Multi-user, in production, built solo.',
+        apps: ['Next.js', 'N8N', 'PhantomBuster', 'OpenAI', 'Attio', 'FullEnrich', 'Lemlist'],
         detail: {
           problem:
-            'Manual sourcing of European B2B SaaS companies was slow and inconsistent. Each team member ran their own ad hoc process with no shared tooling, no scoring consistency, and no visibility across the pipeline.',
+            'Sourcing European B2B SaaS companies at Hexa Scale was entirely manual — no shared pipeline, no consistent scoring, and no way to systematically re-engage companies already in our CRM. Two gaps were compounding each other: qualifying net-new targets was slow and inconsistent across the team, and tracked companies in Attio that had gone silent were simply forgotten. There was no automated loop to bring them back into active conversations.',
           objective:
-            'Build a self-serve, multi-user sourcing platform that automates the full pipeline from LinkedIn search to outreach, with isolated credentials per user so the whole team could operate independently.',
+            'Build a self-serve, multi-user platform with two distinct automated flows: one for discovering and scoring net-new prospects from LinkedIn Sales Navigator, and one for re-engaging tracked companies in Attio that had gone unresponsive — each running on isolated per-user credentials so the whole team can operate independently.',
           pipeline: [
             { label: 'Sales Navigator' },
             { label: 'PhantomBuster' },
@@ -79,9 +79,9 @@ export const employers: Employer[] = [
             { label: 'Lemlist' },
           ],
           stats: [
-            { value: '2,000+', label: 'companies scored' },
+            { value: '30,000+', label: 'companies rated' },
             { value: 'Multi-user', label: 'auth + isolation' },
-            { value: '6 tools', label: 'integrated' },
+            { value: '2 flows', label: 'automated' },
           ],
           stack: [
             'Next.js',
@@ -91,12 +91,13 @@ export const employers: Employer[] = [
             'N8N',
             'PhantomBuster',
             'OpenAI',
+            'Attio',
             'FullEnrich',
             'Lemlist',
             'Vercel',
           ],
           solution:
-            'Replaced a fully manual process with an end-to-end automated pipeline. Each team member connects their own LinkedIn cookie and PhantomBuster agent from a settings panel, imports searches, triggers AI scoring via N8N webhook, enriches contacts, and pushes them directly to Lemlist campaigns. Built solo with no formal engineering background.',
+            'Flow 1 — Prospect Sourcing: Team members run Sales Navigator searches directly from the platform. PhantomBuster automatically extracts company profiles, which N8N passes to OpenAI to score each one against our investment thesis (revenue, sector, geography, business model). Scored results are saved to the database with full visibility across the team. Top matches get contact data enriched via FullEnrich, then pushed directly into Lemlist outreach sequences.\n\nFlow 2 — CRM Re-engagement: A separate N8N workflow connects to Attio, our CRM. It automatically pulls companies with "Tracking" status that have been unresponsive beyond a set threshold. Their contacts are re-enriched and pushed into targeted Lemlist re-engagement campaigns — turning cold tracked leads back into active conversations without any manual intervention.\n\nBoth flows run on isolated per-user credentials, so each team member operates their own LinkedIn cookie and PhantomBuster agent without conflicts. Built solo with no formal engineering background.',
           images: [],
           videoUrl: '/scale-sourcing-demo.mp4',
         },

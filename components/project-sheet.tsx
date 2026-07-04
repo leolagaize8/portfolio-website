@@ -115,7 +115,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
               )}
 
               {/* Sections */}
-              <div className="space-y-10 mb-12">
+              <div className="space-y-12 mb-12">
                 {[
                   { label: 'Problem', content: project.detail.problem },
                   { label: 'Objective', content: project.detail.objective },
@@ -128,10 +128,15 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <h3 className="mb-3 font-mono text-[1.15rem] font-normal leading-none tracking-tight" style={{ color: '#1e3a5f' }}>
-                      {label}
-                    </h3>
-                    <p className="text-[14px] leading-[1.9] text-muted-foreground">{content}</p>
+                    <div className="mb-4 flex items-center gap-3">
+                      <div className="h-px w-8 bg-[#1e3a5f]/30" />
+                      <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground/50">{label}</p>
+                    </div>
+                    <div className="space-y-4">
+                      {content.split('\n\n').map((para, j) => (
+                        <p key={j} className="text-[14px] leading-[1.9] text-muted-foreground">{para}</p>
+                      ))}
+                    </div>
                   </motion.section>
                 ))}
               </div>
@@ -156,30 +161,32 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
 
               <div className="h-px bg-border/60 mb-10" />
 
-              {/* Pipeline */}
-              <motion.section
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="mb-10"
-              >
-                <h3 className="mb-4 font-mono text-[1.15rem] font-normal leading-none tracking-tight" style={{ color: '#1e3a5f' }}>
-                  Pipeline
-                </h3>
-                <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
-                  {project.detail.pipeline.map((step, i) => (
-                    <React.Fragment key={step.label}>
-                      <span className="rounded-xl border border-border bg-white/70 px-3 py-1.5 text-[12px] font-medium text-foreground shadow-sm">
-                        {step.label}
-                      </span>
-                      {i < project.detail.pipeline.length - 1 && (
-                        <ArrowRight size={11} className="shrink-0 text-muted-foreground/40" strokeWidth={1.5} />
-                      )}
-                    </React.Fragment>
-                  ))}
-                </div>
-              </motion.section>
+              {/* Pipeline — hidden for projects with video (flows explained in text) */}
+              {!project.detail.videoUrl && (
+                <motion.section
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="mb-10"
+                >
+                  <h3 className="mb-4 font-mono text-[1.15rem] font-normal leading-none tracking-tight" style={{ color: '#1e3a5f' }}>
+                    Pipeline
+                  </h3>
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+                    {project.detail.pipeline.map((step, i) => (
+                      <React.Fragment key={step.label}>
+                        <span className="rounded-xl border border-border bg-white/70 px-3 py-1.5 text-[12px] font-medium text-foreground shadow-sm">
+                          {step.label}
+                        </span>
+                        {i < project.detail.pipeline.length - 1 && (
+                          <ArrowRight size={11} className="shrink-0 text-muted-foreground/40" strokeWidth={1.5} />
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                </motion.section>
+              )}
 
               {/* Stack */}
               <motion.section
