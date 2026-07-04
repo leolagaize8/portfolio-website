@@ -45,8 +45,8 @@ const experiences = [
   },
   {
     initials: 'ST',
-    logo: null,
-    logoBg: 'bg-blue-100',
+    logo: '/logo-stellantis.jpeg',
+    logoBg: 'bg-[#1e3a9f]',
     color: 'bg-blue-100 text-blue-700',
     role: 'Business Analyst',
     company: 'Stellantis',
