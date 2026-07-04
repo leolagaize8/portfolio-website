@@ -130,7 +130,7 @@ function FullWidthPipeline() {
 
 export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeatureProps) {
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-[#0d1f38]">
+    <div className="relative overflow-hidden rounded-2xl bg-[#0d2d52]/85 border border-blue-400/10">
 {/* Dot grid */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.04]"
@@ -143,6 +143,15 @@ export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeaturePr
 
       <div className="relative px-10 pt-14 pb-12">
 
+        {/* View project — absolute top right */}
+        <button
+          onClick={onOpen}
+          className="group absolute top-9 right-12 z-10 inline-flex items-center gap-2.5 border border-white/20 px-5 py-2.5 text-[12px] font-medium text-white/60 transition-all hover:border-white/50 hover:text-white"
+        >
+          View project
+          <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+        </button>
+
         {/* Top: two columns */}
         <div className="mb-16 grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
 
@@ -153,18 +162,9 @@ export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeaturePr
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="mb-8 flex items-center justify-between">
-              <p className="font-mono text-[11px] uppercase tracking-widest text-white/25">
-                Hexa Scale · Sourcing Platform
-              </p>
-              <button
-                onClick={onOpen}
-                className="group inline-flex items-center gap-2.5 border border-white/20 px-5 py-2.5 text-[12px] font-medium text-white/60 transition-all hover:border-white/50 hover:text-white"
-              >
-                View project
-                <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
-              </button>
-            </div>
+            <p className="mb-8 font-mono text-[11px] uppercase tracking-widest text-white/25">
+              Hexa Scale · Sourcing Platform
+            </p>
 
             <h3 className="mb-5 font-heading text-[clamp(2.2rem,4vw,3.6rem)] font-extrabold leading-[0.95] tracking-tight text-white">
               Scale<br />Sourcing
@@ -199,7 +199,7 @@ export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeaturePr
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col items-center gap-4"
+            className="flex flex-col items-center gap-4 mt-16"
           >
             <div className="w-full overflow-hidden rounded-2xl border border-white/10 bg-black">
               <video

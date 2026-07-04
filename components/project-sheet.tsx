@@ -5,11 +5,9 @@ import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { motion } from 'framer-motion'
 import { X, ArrowRight, ChevronLeft, ChevronRight, Monitor } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { categoryColors, employerAvatarColors } from '@/lib/colors'
+import { employerAvatarColors } from '@/lib/colors'
 import { categoryLabels } from '@/lib/data'
 import type { Project, Employer } from '@/lib/data'
-import { Badge } from '@/components/ui/badge'
-import { Card } from '@/components/ui/card'
 
 interface ProjectSheetProps {
   project: Project
@@ -18,22 +16,11 @@ interface ProjectSheetProps {
   onClose: () => void
 }
 
-type BadgeVariant = 'blue' | 'purple' | 'green' | 'amber'
-
-const categoryBadgeVariant: Record<string, BadgeVariant> = {
-  webapp: 'blue',
-  automation: 'purple',
-  'ai-agent': 'green',
-  research: 'amber',
-}
-
-const sectionVariant = {
-  hidden: { opacity: 0, y: 14 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] },
-  }),
+const categoryColors: Record<string, string> = {
+  webapp: 'bg-blue-100 text-blue-700 border-blue-200',
+  automation: 'bg-purple-100 text-purple-700 border-purple-200',
+  'ai-agent': 'bg-emerald-100 text-emerald-700 border-emerald-200',
+  research: 'bg-amber-100 text-amber-700 border-amber-200',
 }
 
 export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetProps) {
@@ -47,61 +34,61 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
   return (
     <DialogPrimitive.Root open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogPrimitive.Portal>
-        {/* Overlay */}
         <DialogPrimitive.Overlay
           className={cn(
             'fixed inset-0 z-50 bg-black/20 backdrop-blur-[2px]',
             'data-[state=open]:animate-in data-[state=closed]:animate-out',
-            'data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0',
-            'duration-300',
+            'data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 duration-300',
           )}
         />
 
-        {/* Full-page panel sliding from right */}
         <DialogPrimitive.Content
           className={cn(
-            'fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-background shadow-2xl',
+            'fixed inset-y-0 right-0 z-50 flex w-full flex-col',
             'data-[state=open]:animate-in data-[state=closed]:animate-out',
             'data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right',
             'duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]',
           )}
+          style={{ background: 'oklch(0.91 0.018 240)' }}
         >
-          {/* Sticky header */}
-          <div className="flex shrink-0 items-center justify-between border-b border-border px-6 py-4">
-            <div className="flex items-center gap-2.5">
+          {/* Header */}
+          <div className="flex shrink-0 items-center justify-between border-b border-border/60 bg-white/40 px-8 py-4 backdrop-blur-sm">
+            <div className="flex items-center gap-3">
               <div className={cn('flex h-7 w-7 items-center justify-center rounded-lg font-mono text-[10px] font-semibold', avatarColor)}>
                 {employer.initials}
               </div>
-              <span className="text-[12px] text-muted-foreground">{employer.name}</span>
+              <span className="text-[13px] text-muted-foreground">{employer.name}</span>
               <span className="text-muted-foreground/30">/</span>
-              <Badge variant={categoryBadgeVariant[project.category]}>
+              <span className={cn('rounded-full border px-2.5 py-0.5 text-[11px] font-medium', categoryColors[project.category])}>
                 {categoryLabels[project.category]}
-              </Badge>
+              </span>
             </div>
             <button
               onClick={onClose}
-              className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white/80 text-muted-foreground transition-colors hover:text-foreground"
             >
-              <X size={15} strokeWidth={1.5} />
-              <span className="sr-only">Close</span>
+              <X size={14} strokeWidth={1.5} />
             </button>
           </div>
 
-          {/* Scrollable body */}
+          {/* Body */}
           <div className="flex-1 overflow-y-auto">
-            <div className="mx-auto max-w-4xl px-6 py-12 lg:px-12">
+            <div className="mx-auto max-w-4xl px-8 py-12 lg:px-16">
 
-              {/* Title + description */}
+              {/* Title */}
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="mb-10"
               >
-                <DialogPrimitive.Title className="mb-4 text-[clamp(2rem,4vw,3rem)] font-light leading-tight tracking-tight text-foreground">
+                <DialogPrimitive.Title
+                  className="mb-4 font-bold leading-tight tracking-tight"
+                  style={{ fontFamily: 'var(--font-urbanist)', fontSize: 'clamp(2.5rem,5vw,4rem)', color: '#1e3a5f' }}
+                >
                   {project.title}
                 </DialogPrimitive.Title>
-                <p className="text-[15px] leading-relaxed text-muted-foreground">
+                <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
                   {project.description}
                 </p>
               </motion.div>
@@ -111,18 +98,23 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-                className="mb-10 grid grid-cols-3 gap-3"
+                className="mb-12 grid grid-cols-3 gap-3"
               >
                 {project.detail.stats.map((stat) => (
-                  <Card key={stat.label} className="flex flex-col items-center justify-center px-4 py-6 text-center">
-                    <span className="font-mono text-[16px] font-semibold text-foreground">{stat.value}</span>
-                    <span className="mt-1 font-mono text-[10px] uppercase tracking-wide text-muted-foreground/60">{stat.label}</span>
-                  </Card>
+                  <div
+                    key={stat.label}
+                    className="flex flex-col items-center justify-center rounded-2xl border border-border bg-white/70 px-4 py-6 text-center backdrop-blur-sm"
+                  >
+                    <span className="mb-1 font-bold text-[1.5rem] leading-none" style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}>
+                      {stat.value}
+                    </span>
+                    <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground/60">{stat.label}</span>
+                  </div>
                 ))}
               </motion.div>
 
-              {/* Content sections */}
-              <div className="space-y-10 mb-10">
+              {/* Sections */}
+              <div className="space-y-10 mb-12">
                 {[
                   { label: 'Problem', content: project.detail.problem },
                   { label: 'Objective', content: project.detail.objective },
@@ -130,13 +122,17 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 ].map(({ label, content }, i) => (
                   <motion.section
                     key={label}
-                    custom={i}
-                    variants={sectionVariant}
-                    initial="hidden"
-                    whileInView="visible"
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <SectionLabel>{label}</SectionLabel>
+                    <h3
+                      className="mb-3 text-[1.15rem] font-bold tracking-tight"
+                      style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}
+                    >
+                      {label}
+                    </h3>
                     <p className="text-[14px] leading-[1.9] text-muted-foreground">{content}</p>
                   </motion.section>
                 ))}
@@ -148,112 +144,90 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-                  className="mb-10"
+                  className="mb-12"
                 >
-                  <Card className="overflow-hidden">
-                    <div className="relative flex aspect-video items-center justify-center bg-muted/30">
+                  <div className="overflow-hidden rounded-2xl border border-border bg-white/70 backdrop-blur-sm">
+                    <div className="relative flex aspect-video items-center justify-center bg-muted/20">
                       <div className="flex flex-col items-center gap-3 px-12 text-center">
-                        <div className="rounded-xl border border-border bg-background p-3 shadow-sm">
+                        <div className="rounded-xl border border-border bg-white p-3 shadow-sm">
                           <Monitor size={18} className="text-muted-foreground/40" strokeWidth={1.5} />
                         </div>
-                        <p className="max-w-xs text-[12px] leading-relaxed text-muted-foreground">
-                          {images[imageIndex]}
-                        </p>
+                        <p className="max-w-xs text-[12px] leading-relaxed text-muted-foreground">{images[imageIndex]}</p>
                         <p className="font-mono text-[10px] text-muted-foreground/30">Screenshot placeholder</p>
                       </div>
-
                       {images.length > 1 && (
                         <>
-                          <button
-                            onClick={prev}
-                            className="absolute left-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background text-muted-foreground shadow-sm transition-colors hover:text-foreground"
-                          >
+                          <button onClick={prev} className="absolute left-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white text-muted-foreground shadow-sm transition-colors hover:text-foreground">
                             <ChevronLeft size={14} strokeWidth={1.5} />
                           </button>
-                          <button
-                            onClick={next}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background text-muted-foreground shadow-sm transition-colors hover:text-foreground"
-                          >
+                          <button onClick={next} className="absolute right-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white text-muted-foreground shadow-sm transition-colors hover:text-foreground">
                             <ChevronRight size={14} strokeWidth={1.5} />
                           </button>
                         </>
                       )}
                     </div>
-
                     {images.length > 1 && (
                       <div className="flex justify-center gap-1.5 py-3">
                         {images.map((_, i) => (
-                          <button
-                            key={i}
-                            onClick={() => setImageIndex(i)}
-                            className={cn(
-                              'h-1.5 rounded-full transition-all duration-200',
-                              i === imageIndex ? 'w-5 bg-foreground/50' : 'w-1.5 bg-border hover:bg-muted-foreground/30',
-                            )}
-                          />
+                          <button key={i} onClick={() => setImageIndex(i)} className={cn('h-1.5 rounded-full transition-all duration-200', i === imageIndex ? 'w-5 bg-[#1e3a5f]/50' : 'w-1.5 bg-border hover:bg-muted-foreground/30')} />
                         ))}
                       </div>
                     )}
-                  </Card>
+                  </div>
                 </motion.div>
               )}
 
-              <div className="space-y-10 pb-20">
-                <div className="h-px bg-border" />
+              <div className="h-px bg-border/60 mb-10" />
 
-                {/* Pipeline */}
-                <motion.section
-                  custom={3}
-                  variants={sectionVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  <SectionLabel>Pipeline</SectionLabel>
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
-                    {project.detail.pipeline.map((step, i) => (
-                      <React.Fragment key={step.label}>
-                        <span className="rounded-lg border border-border bg-card px-3 py-1.5 font-mono text-[11px] text-foreground shadow-sm">
-                          {step.label}
-                        </span>
-                        {i < project.detail.pipeline.length - 1 && (
-                          <ArrowRight size={11} className="shrink-0 text-muted-foreground/40" strokeWidth={1.5} />
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </div>
-                </motion.section>
+              {/* Pipeline */}
+              <motion.section
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="mb-10"
+              >
+                <h3 className="mb-4 text-[1.15rem] font-bold tracking-tight" style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}>
+                  Pipeline
+                </h3>
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+                  {project.detail.pipeline.map((step, i) => (
+                    <React.Fragment key={step.label}>
+                      <span className="rounded-xl border border-border bg-white/70 px-3 py-1.5 text-[12px] font-medium text-foreground shadow-sm">
+                        {step.label}
+                      </span>
+                      {i < project.detail.pipeline.length - 1 && (
+                        <ArrowRight size={11} className="shrink-0 text-muted-foreground/40" strokeWidth={1.5} />
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+              </motion.section>
 
-                {/* Stack */}
-                <motion.section
-                  custom={4}
-                  variants={sectionVariant}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  <SectionLabel>Stack</SectionLabel>
-                  <div className="flex flex-wrap gap-2">
-                    {project.detail.stack.map((item) => (
-                      <Badge key={item} variant="secondary" className="font-mono text-[11px]">
-                        {item}
-                      </Badge>
-                    ))}
-                  </div>
-                </motion.section>
-              </div>
+              {/* Stack */}
+              <motion.section
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="pb-20"
+              >
+                <h3 className="mb-4 text-[1.15rem] font-bold tracking-tight" style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}>
+                  Stack
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {project.detail.stack.map((item) => (
+                    <span key={item} className="rounded-xl border border-border bg-white/70 px-3 py-1.5 font-mono text-[11px] text-foreground shadow-sm">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </motion.section>
+
             </div>
           </div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
-  )
-}
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="mb-3 font-mono text-[9.5px] uppercase tracking-[0.15em] text-muted-foreground/50">
-      {children}
-    </p>
   )
 }
