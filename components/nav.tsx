@@ -1,41 +1,39 @@
 import Link from 'next/link'
 
-const EMAIL = 'leo.lagaize@hexa.com'
-const LINKEDIN_URL = 'https://www.linkedin.com/in/leolagaize/'
-
-const sectionLinkClass =
-  'inline-flex h-8 items-center rounded-md px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground'
-
-const externalLinkClass =
-  'inline-flex h-8 items-center rounded-md px-3 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground'
-
 export function Nav() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-card/90 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
+    <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-6">
+      <div className="flex h-13 w-full max-w-2xl items-center justify-center gap-1 rounded-2xl border border-border bg-card/90 px-5 shadow-sm backdrop-blur-md">
 
         {/* Logo */}
-        <Link href="/" className="font-mono text-[13px] font-semibold tracking-tight text-foreground hover:text-foreground/80 transition-colors">
+        <Link
+          href="/"
+          className="mr-auto font-mono text-[13px] font-semibold tracking-tight text-foreground transition-colors hover:text-foreground/70"
+        >
           Leo Lagaize
         </Link>
 
-        {/* Section links + external links */}
-        <div className="flex items-center gap-0.5">
-          <Link href="#about" className={sectionLinkClass}>About</Link>
-          <Link href="#projects" className={sectionLinkClass}>Projects</Link>
+        {/* Nav links */}
+        <Link
+          href="#about-me"
+          className="inline-flex h-8 items-center rounded-lg px-3.5 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+        >
+          About
+        </Link>
+        <Link
+          href="#projects"
+          className="inline-flex h-8 items-center rounded-lg px-3.5 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+        >
+          Projects
+        </Link>
 
-          <div className="mx-2 h-4 w-px bg-border" />
-
-          <Link href={`mailto:${EMAIL}`} className={externalLinkClass}>Email</Link>
-          <Link
-            href={LINKEDIN_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={externalLinkClass}
-          >
-            LinkedIn
-          </Link>
-        </div>
+        {/* Get in touch — CTA button */}
+        <Link
+          href="#reach-out"
+          className="ml-2 inline-flex h-8 items-center rounded-lg bg-foreground px-4 text-[13px] font-medium text-background transition-opacity hover:opacity-80"
+        >
+          Get in touch
+        </Link>
 
       </div>
     </header>

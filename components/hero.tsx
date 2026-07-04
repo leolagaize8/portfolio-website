@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Linkedin, Mail } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
+import Link from 'next/link'
 
-const ROLES = ['automations', 'tech', 'startups', 'operating', 'venture capital', 'building']
-const EMAIL = 'leo.lagaize@hexa.com'
-const LINKEDIN_URL = 'https://www.linkedin.com/in/leolagaize/'
+const ROLES = ['startups', 'automations', 'tech', 'operating', 'venture capital', 'building']
 
 function Typewriter() {
   const [text, setText] = useState('')
@@ -25,10 +24,7 @@ function Typewriter() {
           setText(current.slice(0, text.length + 1))
         } else {
           setWaiting(true)
-          setTimeout(() => {
-            setWaiting(false)
-            setDeleting(true)
-          }, 1600)
+          setTimeout(() => { setWaiting(false); setDeleting(true) }, 1600)
         }
       } else {
         if (text.length > 0) {
@@ -55,89 +51,106 @@ export function Hero() {
   return (
     <section
       id="about"
-      className="relative flex min-h-[calc(100vh-56px)] items-center justify-center scroll-mt-14"
+      className="relative flex min-h-screen items-center scroll-mt-20"
     >
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center px-6 text-center">
+      <div className="mx-auto flex w-full max-w-7xl items-center gap-12 px-8 pt-16 lg:gap-16 lg:px-16">
 
-        {/* Emoji avatar */}
+        {/* Left: content */}
+        <div className="flex flex-1 flex-col">
+
+          {/* I love typewriter */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-6 font-mono text-[13px] text-muted-foreground/60"
+          >
+            I love &quot;<Typewriter />&quot;
+          </motion.p>
+
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-7 font-heading text-[clamp(2.6rem,5vw,5rem)] font-extrabold leading-[1.05] tracking-tight"
+            style={{ color: '#1e3a5f' }}
+          >
+            Building automations and cool products for investment funds and startups.
+          </motion.h1>
+
+          {/* Sub text */}
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-10 max-w-md text-[15px] leading-[1.8] text-muted-foreground"
+          >
+            Final year ESCP MiM student. I spent my gap year in the tech ecosystem,
+            working in two investment funds — as an investor and operator.
+            I&apos;m always happy to connect — feel free to reach out.
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-3"
+          >
+            <Link
+              href="#projects"
+              className="inline-flex items-center gap-2 rounded-xl border border-border bg-white px-6 py-3.5 text-[14px] font-medium text-foreground shadow-sm transition-all hover:shadow-md hover:border-foreground/20"
+            >
+              View my projects
+              <ArrowUpRight size={14} strokeWidth={1.5} />
+            </Link>
+            <Link
+              href="#reach-out"
+              className="inline-flex items-center rounded-xl px-6 py-3.5 text-[14px] font-medium text-background transition-opacity hover:opacity-80"
+              style={{ backgroundColor: '#1e3a5f' }}
+            >
+              Get in touch
+            </Link>
+          </motion.div>
+
+          {/* Location */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mt-10 flex items-center gap-1.5 font-mono text-[10px] text-muted-foreground/40"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+            Based in Paris
+          </motion.div>
+        </div>
+
+        {/* Right: photo */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-7"
+          initial={{ opacity: 0, x: 24 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="hidden shrink-0 lg:block"
+          style={{ width: 'min(42%, 520px)' }}
         >
-          <div className="h-[120px] w-[120px] overflow-hidden rounded-full border-2 border-border shadow-lg" style={{ outline: '3px solid rgba(30,58,95,0.12)', outlineOffset: '3px' }}>
+          <div className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '3/4' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/profile.jpg" alt="Leo Lagaize" className="h-full w-full object-cover" style={{ objectPosition: '50% 28%' }} />
+            <img
+              src="/profile.jpg"
+              alt="Leo Lagaize"
+              className="h-full w-full object-cover"
+              style={{ objectPosition: '50% 22%' }}
+            />
+            {/* Caption */}
+            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent px-5 pb-5 pt-12">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/70">
+                Leo Lagaize · ESCP MiM Student
+              </p>
+            </div>
           </div>
         </motion.div>
 
-        {/* Name */}
-        <motion.h1
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-4 font-display text-[clamp(3rem,7vw,5.5rem)] font-bold leading-none tracking-tight"
-          style={{ color: '#1e3a5f' }}
-        >
-          Leo Lagaize
-        </motion.h1>
-
-        {/* Typewriter */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mb-7 text-[1.25rem] text-foreground/70"
-        >
-          I love &quot;<Typewriter />&quot;
-        </motion.p>
-
-        {/* Bio */}
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-9 max-w-lg text-[15px] leading-[1.85] text-muted-foreground"
-        >
-          Welcome to my page! Here you&apos;ll find some of my projects across startups, automation, and shipping things.
-          I&apos;m always happy to connect — feel free to reach out.
-        </motion.p>
-
-        {/* Social icons */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mb-8 flex items-center gap-3"
-        >
-          <a
-            href={LINKEDIN_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-white/80 text-foreground/50 shadow-sm backdrop-blur-sm transition-all hover:scale-105 hover:text-foreground"
-          >
-            <Linkedin size={16} strokeWidth={1.5} />
-          </a>
-          <a
-            href={`mailto:${EMAIL}`}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-white/80 text-foreground/50 shadow-sm backdrop-blur-sm transition-all hover:scale-105 hover:text-foreground"
-          >
-            <Mail size={16} strokeWidth={1.5} />
-          </a>
-        </motion.div>
-
-        {/* Paris indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.65 }}
-          className="mt-7 flex items-center gap-1.5 font-mono text-[10px] text-muted-foreground/50"
-        >
-          <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-          Based in Paris
-        </motion.div>
       </div>
     </section>
   )
