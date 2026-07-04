@@ -17,6 +17,7 @@ export interface ProjectDetail {
   stack: string[]
   solution: string
   images: string[]
+  videoUrl?: string
 }
 
 export interface Project {
@@ -96,11 +97,8 @@ export const employers: Employer[] = [
           ],
           solution:
             'Replaced a fully manual process with an end-to-end automated pipeline. Each team member connects their own LinkedIn cookie and PhantomBuster agent from a settings panel, imports searches, triggers AI scoring via N8N webhook, enriches contacts, and pushes them directly to Lemlist campaigns. Built solo with no formal engineering background.',
-          images: [
-            'Dashboard - company list with AI scores and pipeline status',
-            'Settings panel - per-user LinkedIn and PhantomBuster configuration',
-            'Outreach view - enriched contacts ready for Lemlist push',
-          ],
+          images: [],
+          videoUrl: '/scale-sourcing-demo.mp4',
         },
       },
       {

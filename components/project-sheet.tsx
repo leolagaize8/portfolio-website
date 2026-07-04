@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { motion } from 'framer-motion'
-import { X, ArrowRight, ChevronLeft, ChevronRight, Monitor } from 'lucide-react'
+import { X, ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { employerAvatarColors } from '@/lib/colors'
 import { categoryLabels } from '@/lib/data'
@@ -25,11 +25,6 @@ const categoryColors: Record<string, string> = {
 
 export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetProps) {
   const avatarColor = employerAvatarColors[employer.color]
-  const [imageIndex, setImageIndex] = useState(0)
-  const images = project.detail.images
-
-  const prev = () => setImageIndex((i) => (i - 1 + images.length) % images.length)
-  const next = () => setImageIndex((i) => (i + 1) % images.length)
 
   return (
     <DialogPrimitive.Root open={open} onOpenChange={(o) => !o && onClose()}>
@@ -93,25 +88,31 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 </p>
               </motion.div>
 
-              {/* Stats */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-                className="mb-12 grid grid-cols-3 gap-3"
-              >
-                {project.detail.stats.map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="flex flex-col items-center justify-center rounded-2xl border border-border bg-white/70 px-4 py-6 text-center backdrop-blur-sm"
-                  >
-                    <span className="mb-1 font-bold text-[1.5rem] leading-none" style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}>
-                      {stat.value}
-                    </span>
-                    <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground/60">{stat.label}</span>
-                  </div>
-                ))}
-              </motion.div>
+              {/* Video (if available) or Stats */}
+              {project.detail.videoUrl ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+                  className="mb-12 overflow-hidden rounded-2xl border border-border bg-black shadow-sm"
+                >
+                  <video src={project.detail.videoUrl} controls playsInline className="w-full" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+                  className="mb-12 grid grid-cols-3 gap-3"
+                >
+                  {project.detail.stats.map((stat) => (
+                    <div key={stat.label} className="flex flex-col items-center justify-center rounded-2xl border border-border bg-white/70 px-4 py-6 text-center backdrop-blur-sm">
+                      <span className="mb-1 font-bold text-[1.5rem] leading-none" style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}>{stat.value}</span>
+                      <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground/60">{stat.label}</span>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
 
               {/* Sections */}
               <div className="space-y-10 mb-12">
@@ -127,10 +128,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    <h3
-                      className="mb-3 font-mono text-[1.15rem] font-normal leading-none tracking-tight"
-                      style={{ color: '#1e3a5f' }}
-                    >
+                    <h3 className="mb-3 font-mono text-[1.15rem] font-normal leading-none tracking-tight" style={{ color: '#1e3a5f' }}>
                       {label}
                     </h3>
                     <p className="text-[14px] leading-[1.9] text-muted-foreground">{content}</p>
@@ -138,42 +136,21 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 ))}
               </div>
 
-              {/* Image carousel */}
-              {images.length > 0 && (
+              {/* Stats below text (only for projects with video) */}
+              {project.detail.videoUrl && (
                 <motion.div
                   initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-                  className="mb-12"
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="mb-12 grid grid-cols-3 gap-3"
                 >
-                  <div className="overflow-hidden rounded-2xl border border-border bg-white/70 backdrop-blur-sm">
-                    <div className="relative flex aspect-video items-center justify-center bg-muted/20">
-                      <div className="flex flex-col items-center gap-3 px-12 text-center">
-                        <div className="rounded-xl border border-border bg-white p-3 shadow-sm">
-                          <Monitor size={18} className="text-muted-foreground/40" strokeWidth={1.5} />
-                        </div>
-                        <p className="max-w-xs text-[12px] leading-relaxed text-muted-foreground">{images[imageIndex]}</p>
-                        <p className="font-mono text-[10px] text-muted-foreground/30">Screenshot placeholder</p>
-                      </div>
-                      {images.length > 1 && (
-                        <>
-                          <button onClick={prev} className="absolute left-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white text-muted-foreground shadow-sm transition-colors hover:text-foreground">
-                            <ChevronLeft size={14} strokeWidth={1.5} />
-                          </button>
-                          <button onClick={next} className="absolute right-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white text-muted-foreground shadow-sm transition-colors hover:text-foreground">
-                            <ChevronRight size={14} strokeWidth={1.5} />
-                          </button>
-                        </>
-                      )}
+                  {project.detail.stats.map((stat) => (
+                    <div key={stat.label} className="flex flex-col items-center justify-center rounded-2xl border border-border bg-white/70 px-4 py-6 text-center backdrop-blur-sm">
+                      <span className="mb-1 font-bold text-[1.5rem] leading-none" style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}>{stat.value}</span>
+                      <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground/60">{stat.label}</span>
                     </div>
-                    {images.length > 1 && (
-                      <div className="flex justify-center gap-1.5 py-3">
-                        {images.map((_, i) => (
-                          <button key={i} onClick={() => setImageIndex(i)} className={cn('h-1.5 rounded-full transition-all duration-200', i === imageIndex ? 'w-5 bg-[#1e3a5f]/50' : 'w-1.5 bg-border hover:bg-muted-foreground/30')} />
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  ))}
                 </motion.div>
               )}
 
