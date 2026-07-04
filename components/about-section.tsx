@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 const experiences = [
   {
     initials: 'HS',
-    logo: '/logo-hexa.jpeg',
+    logo: '/logo-hexa-shape.svg',
     logoBg: 'bg-black',
     color: 'bg-purple-100 text-purple-700',
     role: 'Software Investor',
@@ -124,10 +124,10 @@ export function AboutSection() {
                   transition={{ duration: 0.4, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
                   className="flex items-center gap-4 rounded-xl px-3 py-4 transition-colors hover:bg-muted/50"
                 >
-                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl ${exp.logo ? exp.logoBg : exp.color} border border-border`}>
+                  <div className={`flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl ${exp.logo ? exp.logoBg : exp.color} border border-border`}>
                     {exp.logo ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={exp.logo} alt={exp.company} className="h-full w-full object-contain p-1.5" />
+                      <img src={exp.logo} alt={exp.company} className="h-full w-full object-contain p-1" />
                     ) : (
                       <span className="font-mono text-[11px] font-bold">{exp.initials}</span>
                     )}
