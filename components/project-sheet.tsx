@@ -50,22 +50,20 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
         {/* Overlay */}
         <DialogPrimitive.Overlay
           className={cn(
-            'fixed inset-0 z-50 bg-black/30 backdrop-blur-[2px]',
+            'fixed inset-0 z-50 bg-black/20 backdrop-blur-[2px]',
             'data-[state=open]:animate-in data-[state=closed]:animate-out',
             'data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0',
             'duration-300',
           )}
         />
 
-        {/* Centered modal */}
+        {/* Full-page panel sliding from right */}
         <DialogPrimitive.Content
           className={cn(
-            'fixed left-1/2 top-1/2 z-50 flex w-[88vw] max-w-4xl -translate-x-1/2 -translate-y-1/2 flex-col',
-            'max-h-[82vh] rounded-2xl border border-border bg-background shadow-2xl',
+            'fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-background shadow-2xl',
             'data-[state=open]:animate-in data-[state=closed]:animate-out',
-            'data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0',
-            'data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95',
-            'duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]',
+            'data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right',
+            'duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]',
           )}
         >
           {/* Sticky header */}
@@ -91,19 +89,19 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
 
           {/* Scrollable body */}
           <div className="flex-1 overflow-y-auto">
-            <div className="px-6 py-8">
+            <div className="mx-auto max-w-4xl px-6 py-12 lg:px-12">
 
               {/* Title + description */}
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="mb-8"
+                className="mb-10"
               >
-                <DialogPrimitive.Title className="mb-3 text-[1.75rem] font-light leading-tight tracking-tight text-foreground">
+                <DialogPrimitive.Title className="mb-4 text-[clamp(2rem,4vw,3rem)] font-light leading-tight tracking-tight text-foreground">
                   {project.title}
                 </DialogPrimitive.Title>
-                <p className="text-[14px] leading-relaxed text-muted-foreground">
+                <p className="text-[15px] leading-relaxed text-muted-foreground">
                   {project.description}
                 </p>
               </motion.div>
@@ -113,18 +111,18 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-                className="mb-8 grid grid-cols-3 gap-3"
+                className="mb-10 grid grid-cols-3 gap-3"
               >
                 {project.detail.stats.map((stat) => (
-                  <Card key={stat.label} className="flex flex-col items-center justify-center px-4 py-5 text-center">
-                    <span className="font-mono text-[15px] font-semibold text-foreground">{stat.value}</span>
-                    <span className="mt-1 font-mono text-[9px] uppercase tracking-wide text-muted-foreground/60">{stat.label}</span>
+                  <Card key={stat.label} className="flex flex-col items-center justify-center px-4 py-6 text-center">
+                    <span className="font-mono text-[16px] font-semibold text-foreground">{stat.value}</span>
+                    <span className="mt-1 font-mono text-[10px] uppercase tracking-wide text-muted-foreground/60">{stat.label}</span>
                   </Card>
                 ))}
               </motion.div>
 
               {/* Content sections */}
-              <div className="space-y-8 mb-8">
+              <div className="space-y-10 mb-10">
                 {[
                   { label: 'Problem', content: project.detail.problem },
                   { label: 'Objective', content: project.detail.objective },
@@ -139,7 +137,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                     viewport={{ once: true }}
                   >
                     <SectionLabel>{label}</SectionLabel>
-                    <p className="text-[14px] leading-[1.85] text-muted-foreground">{content}</p>
+                    <p className="text-[14px] leading-[1.9] text-muted-foreground">{content}</p>
                   </motion.section>
                 ))}
               </div>
@@ -150,7 +148,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-                  className="mb-8"
+                  className="mb-10"
                 >
                   <Card className="overflow-hidden">
                     <div className="relative flex aspect-video items-center justify-center bg-muted/30">
@@ -200,7 +198,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 </motion.div>
               )}
 
-              <div className="space-y-8">
+              <div className="space-y-10 pb-20">
                 <div className="h-px bg-border" />
 
                 {/* Pipeline */}
@@ -233,7 +231,6 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true }}
-                  className="pb-16"
                 >
                   <SectionLabel>Stack</SectionLabel>
                   <div className="flex flex-wrap gap-2">

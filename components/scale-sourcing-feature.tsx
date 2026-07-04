@@ -185,10 +185,10 @@ export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeaturePr
                   backgroundClip: 'text',
                 }}
               >
-                1,400+
+                30,000+
               </span>
               <span className="max-w-[180px] text-[13px] leading-snug text-white/45">
-                companies sourced and outreached
+                companies scraped, scored, and saved to the database
               </span>
             </div>
           </motion.div>
