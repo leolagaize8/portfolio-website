@@ -121,7 +121,7 @@ export function Hero() {
             className="mt-10 flex items-center gap-1.5 font-mono text-[10px] text-muted-foreground/40"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-            Based in Paris
+            Hexa / Newfund — Paris
           </motion.div>
         </div>
 
