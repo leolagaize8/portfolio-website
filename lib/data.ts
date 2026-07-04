@@ -9,6 +9,12 @@ export interface PipelineStep {
   label: string
 }
 
+export interface Flow {
+  label: string
+  steps: string[]
+  description: string
+}
+
 export interface ProjectDetail {
   problem: string
   objective: string
@@ -18,6 +24,8 @@ export interface ProjectDetail {
   solution: string
   images: string[]
   videoUrl?: string
+  flows?: Flow[]
+  keyDecisions?: string
 }
 
 export interface Project {
@@ -63,13 +71,31 @@ export const employers: Employer[] = [
         title: 'Scale Sourcing',
         category: 'webapp',
         description:
-          'Full-stack sourcing platform with two automated flows — net-new prospect scoring from LinkedIn, and CRM re-engagement from Attio. Multi-user, in production, built solo.',
+          'A full-stack sourcing OS that unifies scraping, AI scoring, email enrichment, outreach, and CRM into a single interface — replacing a fragmented workflow spread across five disconnected tools.',
         apps: ['Next.js', 'N8N', 'PhantomBuster', 'OpenAI', 'Attio', 'FullEnrich', 'Lemlist'],
         detail: {
           problem:
-            'Sourcing European B2B SaaS companies at Hexa Scale was entirely manual — no shared pipeline, no consistent scoring, and no way to systematically re-engage companies already in our CRM. Two gaps were compounding each other: qualifying net-new targets was slow and inconsistent across the team, and tracked companies in Attio that had gone silent were simply forgotten. There was no automated loop to bring them back into active conversations.',
+            'The team ran outbound sourcing across PhantomBuster, Lemlist, FullEnrich, N8N, and LLMs — each with its own context, forcing constant copy-paste and back-and-forth. No shared pipeline, no single source of truth, and no automated loop to bring tracked companies back into active conversations.',
           objective:
-            'Build a self-serve, multi-user platform with two distinct automated flows: one for discovering and scoring net-new prospects from LinkedIn Sales Navigator, and one for re-engaging tracked companies in Attio that had gone unresponsive — each running on isolated per-user credentials so the whole team can operate independently.',
+            'Build a multi-user sourcing platform — designed, built, and shipped solo during my internship at Hexa Scale — that collapses every step of outbound deal sourcing into one interface: one shared database, one pipeline, one source of truth. In production, used daily by the full investment team. 30,000+ companies centralized.',
+          solution:
+            'Scale Sourcing unifies scraping, AI scoring, enrichment, outreach, and CRM across two automated pipelines — a scoring flow for net-new prospects, and a follow-up loop that re-activates dormant targets straight from the CRM.',
+          flows: [
+            {
+              label: 'Flow 1 — Scoring Pipeline',
+              steps: ['Sales Navigator', 'PhantomBuster', 'Dedup', 'AI Scoring', 'Human Review', 'FullEnrich', 'Lemlist / Attio'],
+              description:
+                'I paste a Sales Navigator search URL into the app and tag it (geography, size, vertical). Two chained PhantomBuster agents run: the first exports results into structured rows; the second scrapes each company page for descriptions and firmographics.\n\nOn import, every company is deduplicated globally against the full database on a normalized LinkedIn URL — not per-user, so the shared pipeline stays one source of truth. Only genuinely new companies are inserted.\n\nThe batch is POSTed to an N8N webhook where a Loop Over Items runs each company through an LLM prompt calibrated on the investment thesis, scoring it 1–10 with a rationale, summary, and confidence flag. Results write back and companies surface on the Review page sorted best-first.\n\nThe analyst rejects off-thesis companies and, for the keepers, attaches the CEO and the sourcing signal (a fundraise, a key hire). FullEnrich resolves the CEO\'s email and qualified companies are pushed into a Lemlist sequence or the Attio CRM.',
+            },
+            {
+              label: 'Flow 2 — Follow-Up Loop',
+              steps: ['Attio CRM', 'Tracking', 'Unresponsive', 'AI Agent', 'Human Review', 'Lemlist'],
+              description:
+                'A second pipeline that re-activates dormant targets straight from the CRM — branching directly off the Attio deal flow to recontact companies set aside months ago.\n\nTracking: companies in the deal flow for 6+ months that were never recontacted (typically too early at first contact). Each carries a reason that automatically routes it to the matching Lemlist campaign.\n\nUnresponsive: ~1,350 companies stuck in the Unresponsive stage for 90+ days. A re-engagement agent pulls each company\'s data from Attio, scrapes its website, analyzes its positioning, and drafts a personalized intro. The analyst reviews and edits it in the app before it launches into Lemlist.\n\nThe agent runs as a scheduled Claude Code Routine on cloud infrastructure — triggered by a daily cron or an HTTP webhook from the webapp — so the whole team drives one shared agent through the UI.',
+            },
+          ],
+          keyDecisions:
+            'Scoring logic lives in N8N, not in Git — the app sends companies and receives scores without knowing how they\'re computed. The thesis prompt can be tuned without a redeploy.\n\nDrip-feed sourcing to cut LinkedIn ban risk — PhantomBuster runs in batches of 10 (~150 companies/day) via a Vercel Cron windowed to Paris working hours, draining a 2,000-prospect queue over 10–14 days instead of hammering LinkedIn in one burst.\n\nThe re-engagement agent\'s reasoning lives in a SKILL.md in a connected GitHub repo: full step-by-step process, annotated gold-standard examples, counter-examples, and a mandatory self-critique loop. Confidence (high / medium / low) is a first-class output — "low" is expected when scraped data is too thin, not a prompt for hallucination.\n\nMigrated N8N from Airtable nodes to raw HTTP Request nodes against the Neon API, rebuilding every node\'s data references and writing a multi-pass JSON parser to survive imperfect LLM outputs.',
           pipeline: [
             { label: 'Sales Navigator' },
             { label: 'PhantomBuster' },
@@ -79,7 +105,7 @@ export const employers: Employer[] = [
             { label: 'Lemlist' },
           ],
           stats: [
-            { value: '30,000+', label: 'companies rated' },
+            { value: '30,000+', label: 'companies centralized' },
             { value: 'Multi-user', label: 'auth + isolation' },
             { value: '2 flows', label: 'automated' },
           ],
@@ -96,8 +122,6 @@ export const employers: Employer[] = [
             'Lemlist',
             'Vercel',
           ],
-          solution:
-            'Flow 1 — Prospect Sourcing: Team members run Sales Navigator searches directly from the platform. PhantomBuster automatically extracts company profiles, which N8N passes to OpenAI to score each one against our investment thesis (revenue, sector, geography, business model). Scored results are saved to the database with full visibility across the team. Top matches get contact data enriched via FullEnrich, then pushed directly into Lemlist outreach sequences.\n\nFlow 2 — CRM Re-engagement: A separate N8N workflow connects to Attio, our CRM. It automatically pulls companies with "Tracking" status that have been unresponsive beyond a set threshold. Their contacts are re-enriched and pushed into targeted Lemlist re-engagement campaigns — turning cold tracked leads back into active conversations without any manual intervention.\n\nBoth flows run on isolated per-user credentials, so each team member operates their own LinkedIn cookie and PhantomBuster agent without conflicts. Built solo with no formal engineering background.',
           images: [],
           videoUrl: '/scale-sourcing-demo.mp4',
         },

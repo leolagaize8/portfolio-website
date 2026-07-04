@@ -46,29 +46,26 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
           )}
           style={{ background: 'oklch(0.91 0.018 240)' }}
         >
-          {/* Header */}
-          <div className="flex shrink-0 items-center justify-between border-b border-border/60 bg-white/40 px-8 py-4 backdrop-blur-sm">
-            <div className="flex items-center gap-3">
-              <div className={cn('flex h-7 w-7 items-center justify-center rounded-lg font-mono text-[10px] font-semibold', avatarColor)}>
-                {employer.initials}
-              </div>
-              <span className="text-[13px] text-muted-foreground">{employer.name}</span>
+          {/* Floating pill — centered at top */}
+          <div className="pointer-events-none absolute top-4 left-1/2 z-20 -translate-x-1/2">
+            <div className="pointer-events-auto flex h-11 items-center gap-3 rounded-2xl border border-border bg-card/90 px-5 shadow-sm backdrop-blur-md">
+              <span className="text-[13px] text-muted-foreground">Projects</span>
               <span className="text-muted-foreground/30">/</span>
-              <span className={cn('rounded-full border px-2.5 py-0.5 text-[11px] font-medium', categoryColors[project.category])}>
-                {categoryLabels[project.category]}
-              </span>
+              <span className="text-[13px] font-medium text-foreground">{project.title}</span>
             </div>
-            <button
-              onClick={onClose}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white/80 text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <X size={14} strokeWidth={1.5} />
-            </button>
           </div>
+
+          {/* Floating X button — top right */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-6 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white shadow-md text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <X size={16} strokeWidth={1.5} />
+          </button>
 
           {/* Body */}
           <div className="flex-1 overflow-y-auto">
-            <div className="mx-auto max-w-4xl px-8 py-12 lg:px-16">
+            <div className="mx-auto max-w-4xl px-8 pt-20 pb-12 lg:px-16">
 
               {/* Title */}
               <motion.div
@@ -140,6 +137,62 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                   </motion.section>
                 ))}
               </div>
+
+              {/* Flows — visual pipeline blocks */}
+              {project.detail.flows && project.detail.flows.length > 0 && (
+                <div className="mb-12 space-y-6">
+                  {project.detail.flows.map((flow, i) => (
+                    <motion.div
+                      key={flow.label}
+                      initial={{ opacity: 0, y: 14 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                      className="rounded-2xl border border-border bg-white/50 p-6 backdrop-blur-sm"
+                    >
+                      <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground/50">{flow.label}</p>
+                      <div className="mb-5 flex flex-wrap items-center gap-x-2 gap-y-2">
+                        {flow.steps.map((step, j) => (
+                          <React.Fragment key={step}>
+                            <span className="rounded-xl border border-border bg-white/80 px-3 py-1.5 text-[12px] font-medium text-foreground shadow-sm">
+                              {step}
+                            </span>
+                            {j < flow.steps.length - 1 && (
+                              <ArrowRight size={11} className="shrink-0 text-muted-foreground/40" strokeWidth={1.5} />
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </div>
+                      <div className="space-y-3">
+                        {flow.description.split('\n\n').map((para, j) => (
+                          <p key={j} className="text-[13px] leading-[1.85] text-muted-foreground">{para}</p>
+                        ))}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+
+              {/* Key decisions */}
+              {project.detail.keyDecisions && (
+                <motion.section
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="mb-12"
+                >
+                  <div className="mb-4 flex items-center gap-3">
+                    <div className="h-px w-8 bg-[#1e3a5f]/30" />
+                    <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground/50">Key decisions</p>
+                  </div>
+                  <div className="space-y-4">
+                    {project.detail.keyDecisions.split('\n\n').map((para, i) => (
+                      <p key={i} className="text-[14px] leading-[1.9] text-muted-foreground">{para}</p>
+                    ))}
+                  </div>
+                </motion.section>
+              )}
 
               {/* Stats below text (only for projects with video) */}
               {project.detail.videoUrl && (
