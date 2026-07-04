@@ -3,6 +3,9 @@
 import Link from 'next/link'
 import { motion, useScroll, useSpring } from 'framer-motion'
 
+const scrollTo = (id: string) =>
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+
 export function Nav() {
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30, restDelta: 0.001 })
@@ -20,26 +23,26 @@ export function Nav() {
         </Link>
 
         {/* Nav links */}
-        <Link
-          href="#about-me"
+        <button
+          onClick={() => scrollTo('about-me')}
           className="inline-flex h-8 items-center rounded-lg px-3.5 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
         >
           About
-        </Link>
-        <Link
-          href="#projects"
+        </button>
+        <button
+          onClick={() => scrollTo('projects')}
           className="inline-flex h-8 items-center rounded-lg px-3.5 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
         >
           Projects
-        </Link>
+        </button>
 
         {/* Get in touch — CTA button */}
-        <Link
-          href="#reach-out"
+        <button
+          onClick={() => scrollTo('reach-out')}
           className="ml-2 inline-flex h-8 items-center rounded-lg bg-foreground px-4 text-[13px] font-medium text-background transition-opacity hover:opacity-80"
         >
           Get in touch
-        </Link>
+        </button>
 
         {/* Scroll progress — bottom edge of pill */}
         <motion.div

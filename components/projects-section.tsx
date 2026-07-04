@@ -31,14 +31,14 @@ export function ProjectsSection() {
   ]
 
   return (
-    <section id="projects" className="pt-24 pb-36 scroll-mt-20">
+    <section id="projects" className="pt-12 pb-36 scroll-mt-20">
       {/* Section header */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="mb-16 border-b border-border pb-8 px-[max(1.5rem,calc((100vw-64rem)/2+1.5rem))]"
+        className="mb-8 border-b border-border pb-6 px-[max(1.5rem,calc((100vw-64rem)/2+1.5rem))]"
       >
         <p className="mb-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground/40">02</p>
         <h2 className="font-mono text-[clamp(1.4rem,2.2vw,2rem)] font-normal leading-none tracking-tight" style={{ color: '#1e3a5f' }}>

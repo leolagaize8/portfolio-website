@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import Link from 'next/link'
 
 const ROLES = ['startups', 'automations', 'tech', 'operating', 'backing builders', 'building']
 
@@ -98,20 +97,20 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
             className="flex items-center gap-3"
           >
-            <Link
-              href="#projects"
+            <button
+              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
               className="inline-flex items-center gap-2 rounded-xl border border-border bg-white px-6 py-3.5 text-[14px] font-medium text-foreground shadow-sm transition-all hover:shadow-md hover:border-foreground/20"
             >
               View my projects
               <ArrowUpRight size={14} strokeWidth={1.5} />
-            </Link>
-            <Link
-              href="#reach-out"
+            </button>
+            <button
+              onClick={() => document.getElementById('reach-out')?.scrollIntoView({ behavior: 'smooth' })}
               className="inline-flex items-center rounded-xl px-6 py-3.5 text-[14px] font-medium text-background transition-opacity hover:opacity-80"
               style={{ backgroundColor: '#1e3a5f' }}
             >
               Get in touch
-            </Link>
+            </button>
           </motion.div>
 
           {/* Location */}
