@@ -1,9 +1,15 @@
+'use client'
+
 import Link from 'next/link'
+import { motion, useScroll, useSpring } from 'framer-motion'
 
 export function Nav() {
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30, restDelta: 0.001 })
+
   return (
     <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-6">
-      <div className="flex h-13 w-full max-w-2xl items-center justify-center gap-1 rounded-2xl border border-border bg-card/90 px-5 shadow-sm backdrop-blur-md">
+      <div className="relative flex h-13 w-full max-w-2xl items-center justify-center gap-1 overflow-hidden rounded-2xl border border-border bg-card/90 px-5 shadow-sm backdrop-blur-md">
 
         {/* Logo */}
         <Link
@@ -34,6 +40,12 @@ export function Nav() {
         >
           Get in touch
         </Link>
+
+        {/* Scroll progress — bottom edge of pill */}
+        <motion.div
+          style={{ scaleX, transformOrigin: '0%' }}
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#1e3a5f]"
+        />
 
       </div>
     </header>

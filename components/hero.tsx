@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 
-const ROLES = ['startups', 'automations', 'tech', 'operating', 'venture capital', 'building']
+const ROLES = ['startups', 'automations', 'tech', 'operating', 'backing builders', 'building']
 
 function Typewriter() {
   const [text, setText] = useState('')
@@ -73,10 +73,10 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-7 font-heading text-[clamp(2.6rem,5vw,5rem)] font-extrabold leading-[1.05] tracking-tight"
-            style={{ color: '#1e3a5f' }}
+            className="mb-7 text-[clamp(2rem,3.6vw,3.6rem)] font-bold leading-[1.1] tracking-normal"
+            style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}
           >
-            Building automations and cool products for investment funds and startups.
+            Building cool AI products for investment funds and their portcos.
           </motion.h1>
 
           {/* Sub text */}
@@ -132,7 +132,7 @@ export function Hero() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           className="hidden shrink-0 lg:block"
-          style={{ width: 'min(42%, 520px)' }}
+          style={{ width: 'min(28%, 360px)' }}
         >
           <div className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '3/4' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -145,7 +145,7 @@ export function Hero() {
             {/* Caption */}
             <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent px-5 pb-5 pt-12">
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/70">
-                Leo Lagaize · ESCP MiM Student
+                Leo Lagaize · Hexa / Newfund
               </p>
             </div>
           </div>
