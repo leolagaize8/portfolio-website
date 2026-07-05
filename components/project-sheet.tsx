@@ -17,23 +17,31 @@ interface ProjectSheetProps {
 
 function ImageCarousel({ images }: { images: string[] }) {
   const [active, setActive] = useState(0)
+  const [loaded, setLoaded] = useState<boolean[]>(images.map(() => true))
 
-  if (images.length === 0) return null
+  const validImages = images.filter((_, i) => loaded[i])
 
-  if (images.length === 1) {
-    return (
-      <div className="overflow-hidden rounded-2xl border border-border bg-white/30">
-        <img src={images[0]} alt="" className="w-full" />
-      </div>
-    )
-  }
+  if (images.length === 0 || validImages.length === 0) return null
+
+  const realActive = Math.min(active, validImages.length - 1)
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-border bg-white/30">
+      {/* Preload all images invisibly to detect broken ones */}
+      {images.map((src, i) => (
+        <img
+          key={src}
+          src={src}
+          alt=""
+          className="hidden"
+          onError={() => setLoaded(prev => { const next = [...prev]; next[i] = false; return next })}
+        />
+      ))}
+
       <AnimatePresence mode="wait">
         <motion.img
-          key={active}
-          src={images[active]}
+          key={validImages[realActive]}
+          src={validImages[realActive]}
           alt=""
           className="w-full"
           initial={{ opacity: 0, x: 16 }}
@@ -43,28 +51,31 @@ function ImageCarousel({ images }: { images: string[] }) {
         />
       </AnimatePresence>
 
-      <button
-        onClick={() => setActive(i => (i - 1 + images.length) % images.length)}
-        className="absolute left-3 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white/90 text-muted-foreground shadow-sm transition-colors hover:text-foreground"
-      >
-        <ChevronLeft size={14} strokeWidth={1.5} />
-      </button>
-      <button
-        onClick={() => setActive(i => (i + 1) % images.length)}
-        className="absolute right-3 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white/90 text-muted-foreground shadow-sm transition-colors hover:text-foreground"
-      >
-        <ChevronRight size={14} strokeWidth={1.5} />
-      </button>
-
-      <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
-        {images.map((_, i) => (
+      {validImages.length > 1 && (
+        <>
           <button
-            key={i}
-            onClick={() => setActive(i)}
-            className={cn('h-1.5 rounded-full transition-all', i === active ? 'w-4 bg-[#1e3a5f]' : 'w-1.5 bg-[#1e3a5f]/25')}
-          />
-        ))}
-      </div>
+            onClick={() => setActive(i => (i - 1 + validImages.length) % validImages.length)}
+            className="absolute left-3 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white/90 text-muted-foreground shadow-sm transition-colors hover:text-foreground"
+          >
+            <ChevronLeft size={14} strokeWidth={1.5} />
+          </button>
+          <button
+            onClick={() => setActive(i => (i + 1) % validImages.length)}
+            className="absolute right-3 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white/90 text-muted-foreground shadow-sm transition-colors hover:text-foreground"
+          >
+            <ChevronRight size={14} strokeWidth={1.5} />
+          </button>
+          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
+            {validImages.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActive(i)}
+                className={cn('h-1.5 rounded-full transition-all', i === realActive ? 'w-4 bg-[#1e3a5f]' : 'w-1.5 bg-[#1e3a5f]/25')}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   )
 }
@@ -227,8 +238,14 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                           <p key={j} className="text-[13px] leading-[1.85] text-muted-foreground">{para}</p>
                         ))}
                       </div>
-                      {flow.imageUrl && (
-                        <div className="mt-5 overflow-hidden rounded-xl border border-white/10 bg-black">
+                                      {flow.imageUrl && (
+                        <div
+                          className="mt-5 overflow-hidden rounded-xl border border-white/10 bg-black"
+                          ref={(el) => {
+                            const img = el?.querySelector('img')
+                            if (img) img.onerror = () => { if (el) el.style.display = 'none' }
+                          }}
+                        >
                           <img src={flow.imageUrl} alt={flow.label} className="w-full opacity-90" />
                         </div>
                       )}
