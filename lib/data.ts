@@ -36,6 +36,7 @@ export interface Project {
   description: string
   apps: string[]
   clientLogo?: string
+  thumbnailUrl?: string
   detail: ProjectDetail
 }
 
@@ -133,6 +134,7 @@ export const employers: Employer[] = [
         description:
           'A market-coverage engine that reads external deal newsletters, filters them against the investment thesis, cross-checks every deal against the CRM, and emails the team a curated weekly digest backed by a live coverage dashboard.',
         apps: ['N8N', 'LLM', 'Google Sheets', 'Attio', 'Gmail'],
+        thumbnailUrl: '/coverage-email-thumb.png',
         detail: {
           problem:
             'The team relied on manually reading several VC and M&A newsletters to stay on top of the market — inconsistent, time-consuming, and impossible to measure. There was no systematic way to know which deals hitting the market were already tracked in the CRM, and which were being missed entirely.',

@@ -60,6 +60,8 @@ const toolIcons: Record<string, IconDef> = {
   'PhantomBuster': { type: 'local', src: '/phantombuster.png' },
   'FullEnrich':    { type: 'local', src: '/fullenrich.png' },
   'Lemlist':       { type: 'local', src: '/lemlist.png' },
+  'LLM':           { type: 'local', src: '/openai.jpeg' },
+  'Attio':         { type: 'local', src: '/attio.png' },
   'SKILL.md':      { type: 'text', initials: 'SK' },
   'Recharts':      { type: 'text', initials: 'RC' },
   'RAG':           { type: 'text', initials: 'RAG' },
@@ -117,10 +119,10 @@ export function ProjectCard({ project, employer, onClick, showEmployerLogo }: Pr
             'relative flex h-40 items-center justify-center overflow-hidden bg-gradient-to-br',
             photoZoneBg[employer.color],
           )}>
-            {project.detail.images?.[0] ? (
+            {(project.thumbnailUrl || project.detail.images?.[0]) ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={project.detail.images[0]}
+                src={project.thumbnailUrl ?? project.detail.images![0]}
                 alt={project.title}
                 className="h-full w-full object-cover object-top"
               />
