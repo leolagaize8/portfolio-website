@@ -14,6 +14,7 @@ const categoryBadgeVariant: Record<string, BadgeVariant> = {
   webapp: 'blue',
   automation: 'purple',
   'ai-agent': 'green',
+  'claude-skill': 'green',
   research: 'amber',
 }
 

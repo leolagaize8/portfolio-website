@@ -1,4 +1,4 @@
-export type ProjectCategory = 'webapp' | 'automation' | 'ai-agent' | 'research'
+export type ProjectCategory = 'webapp' | 'automation' | 'ai-agent' | 'research' | 'claude-skill'
 
 export interface StatItem {
   value: string
@@ -56,6 +56,7 @@ export const categoryLabels: Record<ProjectCategory, string> = {
   webapp: 'Web App',
   automation: 'Automation',
   'ai-agent': 'AI Agent',
+  'claude-skill': 'Claude Skill',
   research: 'Research',
 }
 
@@ -192,7 +193,7 @@ export const employers: Employer[] = [
       {
         id: 'conference-sourcing',
         title: 'Conference Sourcing Skills',
-        category: 'ai-agent',
+        category: 'claude-skill',
         description:
           'A suite of 2 Claude Code skills that automate the full conference sourcing workflow — finding relevant trade shows by sector and geography, scraping exhibitor lists from any format, and scoring each company against the investment thesis.',
         apps: ['Claude', 'SKILL.md', 'LLM', 'Google Sheets', 'Web scraping'],
@@ -234,31 +235,54 @@ export const employers: Employer[] = [
         title: 'Bottom-Up Market Research',
         category: 'research',
         description:
-          'Structured bottom-up market sizing methodology for live deal evaluation, mapping addressable markets from first principles to validate or challenge founder assumptions.',
-        apps: ['Claude', 'Perplexity', 'React', 'Recharts'],
+          'A 6-step methodology to map any French market from scratch using public APIs and MCPs — extracting every active company, enriching with financials and company objects, classifying by sub-activity, and sizing the addressable opportunity in-house.',
+        apps: ['Claude', 'N8N', 'Web scraping', 'Google Sheets'],
+        thumbnailUrl: '/datagouv.png',
         detail: {
           problem:
-            'Founder TAM claims are almost never stress-tested. Standard top-down market sizing accepts inflated figures at face value and rarely surfaces the real addressable opportunity.',
+            'Market sizing was either outsourced to expensive external consultants or done through clunky manual processes — scraping websites, copy-pasting data, stitching together disconnected APIs. The result was slow, costly, and hard to reproduce. With MCP servers available directly in Claude Code, the same depth of analysis can now be done in-house in hours: pulling structured data from government registries, enriching it with financial and descriptive data, and mapping the full market from first principles.',
           objective:
-            'Establish a repeatable, founder-independent methodology to size any market from first principles before conviction, generating deal-ready output that holds up under scrutiny.',
-          pipeline: [
-            { label: 'Sector mapping' },
-            { label: 'Claude research' },
-            { label: 'Perplexity data' },
-            { label: 'React dashboard' },
+            'Build a repeatable, bottom-up methodology to map any French sector — identifying every active company, collecting their financials and legal data, segmenting by sub-activity, and sizing the addressable opportunity — entirely within Claude Code using MCPs, with no external cost for the base extraction.',
+          solution:
+            'A 6-step pipeline built around the free DataGouv API and the INPI API, orchestrated by Claude Code. The process goes from NAF code identification all the way to sub-activity classification and website enrichment, producing a structured dataset ready for deal analysis.\n\nThe base extraction is free and covers 46 columns per company. The 10,000-result API cap is bypassed by querying all 102 French departments separately and deduplicating by SIREN. INPI enrichment adds the company\'s stated business object for segmentation. Website lookup runs through an N8N + Linkup workflow at ~€0.05 per company.',
+          flows: [
+            {
+              label: 'Step 1 — NAF Code Identification',
+              steps: ['Sector input', 'Claude NAF lookup', 'Adjacent codes check'],
+              description: 'Start by identifying all NAF codes that cover the target sector — including adjacent ones. A sector is rarely captured by a single code. In private security for example, alarm system installers sit under 80.20Z while surveillance is 80.10Z. Missing adjacent codes means missing a slice of the market.',
+            },
+            {
+              label: 'Step 2 — Full Market Extraction via DataGouv API',
+              steps: ['API Recherche Entreprises', '102 departments queried', 'SIREN deduplication', '46-column CSV'],
+              description: 'The DataGouv Recherche Entreprises API is free, requires no API key, and returns up to 46 columns per company — including SIREN, revenue, headcount bracket, legal form, address, directors, and collective agreement.\n\nThe API caps at 10,000 results per query. The workaround: query each of France\'s 102 departments separately, then deduplicate by SIREN. A retry script with exponential backoff handles 429 rate limit errors. The output is a single deduplicated CSV covering the full national market.',
+            },
+            {
+              label: 'Step 3 — Data Cleaning & Filtering',
+              steps: ['Remove sole traders (EI)', 'Remove associations & public entities', 'IDCC convention analysis'],
+              description: 'Filter out entities that won\'t buy software: sole traders, associations, public bodies, and SCIs. The collective agreement code (IDCC) is a strong signal to confirm sector relevance — companies under the sector-specific IDCC are the confirmed core market. Useful to check data coverage before going further.',
+            },
+            {
+              label: 'Step 4 — INPI Enrichment (Objet Social)',
+              steps: ['INPI API auth', 'Objet social per SIREN', 'Incremental save', 'Retry on 401/429'],
+              description: 'The NAF code is identical for every company in the sector. The objet social — retrieved from the INPI RNE API — gives the actual stated activity: human surveillance, cash-in-transit, airport security, telecoms monitoring, etc. This is what makes sub-activity segmentation possible.\n\nThe API is limited to 10,000 requests/day and tokens expire, so the script saves progress incrementally in a JSON file and handles automatic re-authentication on 401 errors. About 30% of small companies return 404 — normal, as many are not registered in the commercial registry.',
+            },
+            {
+              label: 'Step 5 — Sub-activity Classification',
+              steps: ['Frequency analysis on objet social', 'Regex by category', '80–90% coverage', 'LLM pass for edge cases'],
+              description: 'Classify companies into sub-activities using regex on the objet social — not a per-company LLM call, which would be slow and expensive. Regulated sectors use standardised vocabulary, so regex covers 80–90% of companies and typically 97%+ of total revenue. An optional LLM batch pass handles the ambiguous ~10%.',
+            },
+            {
+              label: 'Step 6 — Website Enrichment via N8N + Linkup',
+              steps: ['N8N workflow', 'Linkup deep search per company', 'URL extraction', 'Google Sheet output'],
+              description: 'Websites are not captured in official registries. An N8N workflow reads the filtered company list, runs a Linkup deep search per company name, extracts the first result that isn\'t Pappers/Infogreffe/Societe.com, and writes the URL back to the sheet. Cost: ~€0.05 per company. Only run on relevant companies — not on the full 15,000-company base.',
+            },
           ],
           stats: [
-            { value: 'Bottom-up', label: 'methodology' },
-            { value: 'First principles', label: 'sizing' },
-            { value: 'Deal-ready', label: 'output format' },
+            { value: '46 cols', label: 'per company' },
+            { value: '6 steps', label: 'repeatable process' },
+            { value: '~€0', label: 'base extraction' },
           ],
-          stack: ['Claude', 'Perplexity', 'React', 'Recharts', 'Structured prompting'],
-          solution:
-            'Repeatable research process combining Claude and Perplexity for data gathering with a structured bottom-up sizing formula (unit economics × addressable units × penetration rate). Output is an interactive React dashboard built for deal review, showing scenario ranges and sensitivity to key assumptions.',
-          images: [
-            'Market sizing dashboard - TAM breakdown with scenario ranges',
-            'Unit economics view - bottom-up build from first principles',
-          ],
+          stack: ['Claude Code', 'MCP DataGouv', 'API INPI', 'N8N', 'Linkup', 'Google Sheets'],
         },
       },
     ],
