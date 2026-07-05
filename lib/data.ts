@@ -25,6 +25,7 @@ export interface ProjectDetail {
   solution: string
   images: string[]
   videoUrl?: string
+  overviewImageUrl?: string
   flows?: Flow[]
 }
 
@@ -139,6 +140,7 @@ export const employers: Employer[] = [
             'Build an autonomous coverage engine that ingests deal newsletters from two sources, filters them against the investment thesis, cross-references every deal against the Attio CRM, and delivers a curated weekly digest — turning raw market noise into a measurable coverage KPI.',
           solution:
             'Three N8N workflows (40+ nodes) handle ingestion, CRM cross-referencing, and weekly reporting. Two source-specific parsers handle different newsletter formats; both converge on one schema, one Google Sheet, and one Attio-matching pattern. A Monday evening cron assembles the week\'s deals into a professional HTML digest and sends it to the full team.',
+          overviewImageUrl: '/coverage-n8n-overview.png',
           flows: [
             {
               label: 'Avolta — VC Rounds & Exits',

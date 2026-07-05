@@ -201,6 +201,17 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                       <div className="h-px w-8 bg-[#1e3a5f]/30" />
                       <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground/50">{label}</p>
                     </div>
+                    {label === 'Solution' && project.detail.overviewImageUrl && (
+                      <div
+                        className="mb-6 overflow-hidden rounded-xl border border-border bg-black"
+                        ref={(el) => {
+                          const img = el?.querySelector('img')
+                          if (img) img.onerror = () => { if (el) el.style.display = 'none' }
+                        }}
+                      >
+                        <img src={project.detail.overviewImageUrl} alt="Overview" className="w-full" />
+                      </div>
+                    )}
                     <div className="space-y-4">
                       {content.split('\n\n').map((para, j) => (
                         <p key={j} className="text-[14px] leading-[1.9] text-muted-foreground">{para}</p>
