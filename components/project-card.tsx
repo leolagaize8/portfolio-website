@@ -114,12 +114,21 @@ export function ProjectCard({ project, employer, onClick, showEmployerLogo }: Pr
         <CardContent className="flex flex-1 flex-col p-0">
           {/* Photo zone */}
           <div className={cn(
-            'relative flex h-40 items-center justify-center bg-gradient-to-br',
+            'relative flex h-40 items-center justify-center overflow-hidden bg-gradient-to-br',
             photoZoneBg[employer.color],
           )}>
-            <div className="flex flex-col items-center gap-2 opacity-30">
-              <Monitor size={28} strokeWidth={1} />
-            </div>
+            {project.detail.images?.[0] ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={project.detail.images[0]}
+                alt={project.title}
+                className="h-full w-full object-cover object-top"
+              />
+            ) : (
+              <div className="flex flex-col items-center gap-2 opacity-30">
+                <Monitor size={28} strokeWidth={1} />
+              </div>
+            )}
             {showEmployerLogo && (
               <div className="absolute top-2 right-2 flex items-center gap-1.5">
                 <div className="flex items-center rounded-md bg-white/90 px-2 py-1 shadow-sm backdrop-blur-sm">
