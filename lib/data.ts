@@ -128,7 +128,7 @@ export const employers: Employer[] = [
       },
       {
         id: 'coverage',
-        title: 'Coverage',
+        title: 'Market Deal Coverage',
         category: 'automation',
         description:
           'A market-coverage engine that reads external deal newsletters, filters them against the investment thesis, cross-checks every deal against the CRM, and emails the team a curated weekly digest backed by a live coverage dashboard.',
