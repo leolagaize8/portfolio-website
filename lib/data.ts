@@ -132,7 +132,7 @@ export const employers: Employer[] = [
         category: 'automation',
         description:
           'A market-coverage engine that reads external deal newsletters, filters them against the investment thesis, cross-checks every deal against the CRM, and emails the team a curated weekly digest backed by a live coverage dashboard.',
-        apps: ['N8N', 'GPT-4.1', 'Google Sheets', 'Attio', 'Gmail'],
+        apps: ['N8N', 'LLM', 'Google Sheets', 'Attio', 'Gmail'],
         detail: {
           problem:
             'The team relied on manually reading several VC and M&A newsletters to stay on top of the market — inconsistent, time-consuming, and impossible to measure. There was no systematic way to know which deals hitting the market were already tracked in the CRM, and which were being missed entirely.',
@@ -144,30 +144,30 @@ export const employers: Employer[] = [
           flows: [
             {
               label: 'Avolta — VC Rounds & Exits',
-              steps: ['Gmail Trigger', 'Text Parser', 'GPT-4.1 Filter', 'Google Sheets', 'Attio Match', 'Stage Lookup'],
+              steps: ['Gmail Trigger', 'Text Parser', 'LLM Filter', 'Google Sheets', 'Attio Match', 'Stage Lookup'],
               imageUrl: '/coverage-n8n-avolta.png',
               description:
-                'A resilient text parser handles Avolta\'s formatting quirks (quoted-printable breaks, starred vs. plain company headers), splits the newsletter into individual deals, and extracts amounts, tags, and dates. A GPT-4.1 pass then applies the thesis filter — keeping only clearly B2B software in the €2–25m range; dropping seed rounds, hardware, biotech, consumer, and anything outside the band.\n\nEvery kept deal is written to the Google Sheet, then cross-referenced against Attio: the workflow searches the CRM by company name, and on a match queries the deal-flow list to pull that company\'s current stage (Tracking, Unresponsive, Passed, Lost…). Each row is tagged in-CRM or not, and enriched with its stage.',
+                'A resilient text parser handles Avolta\'s formatting quirks (quoted-printable breaks, starred vs. plain company headers), splits the newsletter into individual deals, and extracts amounts, tags, and dates. A LLM pass then applies the thesis filter — keeping only clearly B2B software in the €2–25m range; dropping seed rounds, hardware, biotech, consumer, and anything outside the band.\n\nEvery kept deal is written to the Google Sheet, then cross-referenced against Attio: the workflow searches the CRM by company name, and on a match queries the deal-flow list to pull that company\'s current stage (Tracking, Unresponsive, Passed, Lost…). Each row is tagged in-CRM or not, and enriched with its stage.',
             },
             {
               label: 'Fusacq — M&A & Advised Operations',
-              steps: ['Gmail Trigger', 'LLM Classify', 'LLM Extract', 'Loop + HTTP Scrape', 'GPT-4.1 Describe', 'Thesis Filter', 'Google Sheets', 'Attio Match'],
+              steps: ['Gmail Trigger', 'LLM Classify', 'LLM Extract', 'Loop + HTTP Scrape', 'LLM Describe', 'Thesis Filter', 'Google Sheets', 'Attio Match'],
               imageUrl: '/coverage-n8n-fusacq.png',
               description:
                 'A stricter, multi-stage pipeline. A first LLM classifies whether the email even contains a real deal (vs. agendas, webinars, directory noise). If it does, a second LLM extracts each deal, then the workflow loops over them — fetching each source article, generating a grounded deal + company description under explicit anti-hallucination rules, and running a per-deal thesis filter.\n\nLLMs are boxed in as narrow, single-purpose steps (classify → extract → describe → filter), each with strict JSON-only outputs — so failures stay isolated and debuggable, rather than one fragile do-everything prompt.',
             },
             {
               label: 'Weekly Digest & Dashboard',
-              steps: ['Schedule Trigger', 'Google Sheets', 'GPT-4.1 Render', 'Apps Script PDF', 'Gmail'],
+              steps: ['Schedule Trigger', 'Google Sheets', 'LLM Render', 'Apps Script PDF', 'Gmail'],
               imageUrl: '/coverage-n8n-reporting.png',
               description:
-                'A scheduled workflow (Mondays, 5pm) reads the week\'s deals, computes the date window, and has GPT-4.1 render them into a fixed HTML email — normalizing company names, splitting Fundraising from Exits, deduplicating companies that appeared in both sources (keeping the richer Fusacq data), and writing a 2–3 line synthesis per deal.\n\nIt then calls a Google Apps Script endpoint that captures the live dashboard as a PDF, attaches it, and sends the Scale Reporting digest to the full team. The dashboard turns the raw log into coverage metrics: total deals seen, VC vs. M&A split, coverage rate, weekly volume chart, and breakdown by CRM stage.',
+                'A scheduled workflow (Mondays, 5pm) reads the week\'s deals, computes the date window, and has LLM render them into a fixed HTML email — normalizing company names, splitting Fundraising from Exits, deduplicating companies that appeared in both sources (keeping the richer Fusacq data), and writing a 2–3 line synthesis per deal.\n\nIt then calls a Google Apps Script endpoint that captures the live dashboard as a PDF, attaches it, and sends the Scale Reporting digest to the full team. The dashboard turns the raw log into coverage metrics: total deals seen, VC vs. M&A split, coverage rate, weekly volume chart, and breakdown by CRM stage.',
             },
           ],
           pipeline: [
             { label: 'Gmail' },
             { label: 'N8N Parse' },
-            { label: 'GPT-4.1' },
+            { label: 'LLM' },
             { label: 'Attio Match' },
             { label: 'Google Sheets' },
             { label: 'Weekly Digest' },
@@ -177,7 +177,7 @@ export const employers: Employer[] = [
             { value: '24%', label: 'CRM coverage' },
             { value: 'Weekly', label: 'auto-digest' },
           ],
-          stack: ['N8N', 'GPT-4.1', 'Google Sheets', 'Google Apps Script', 'Attio API', 'Gmail'],
+          stack: ['N8N', 'LLM', 'Google Sheets', 'Google Apps Script', 'Attio API', 'Gmail'],
           images: [
             '/coverage-email-p1.png',
             '/coverage-email-p2.png',
