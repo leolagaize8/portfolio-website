@@ -320,7 +320,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="pb-20"
+                className="pb-32"
               >
                 <h3 className="mb-4 font-mono text-[1.15rem] font-normal leading-none tracking-tight" style={{ color: '#1e3a5f' }}>
                   Stack

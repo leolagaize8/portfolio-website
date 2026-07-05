@@ -191,34 +191,42 @@ export const employers: Employer[] = [
       },
       {
         id: 'conference-sourcing',
-        title: 'Conference Sourcing Skill',
+        title: 'Conference Sourcing Skills',
         category: 'ai-agent',
         description:
-          'Reusable Claude skill that takes any trade show exhibitor list, scores each company against the investment thesis, and outputs a structured shortlist automatically.',
-        apps: ['Claude', 'SKILL.md', 'Web scraping', 'N8N'],
+          'A suite of 2 Claude Code skills that automate the full conference sourcing workflow — finding relevant trade shows by sector and geography, scraping exhibitor lists from any format, and scoring each company against the investment thesis.',
+        apps: ['Claude', 'SKILL.md', 'LLM', 'Google Sheets', 'Web scraping'],
+        thumbnailUrl: '/conference-sourcing-thumb.png',
         detail: {
           problem:
-            'Manually reviewing exhibitor lists before trade shows was slow and inconsistent. Different people applied different criteria, and relevant targets were often missed or deprioritized.',
+            'Sales Navigator was the primary sourcing channel — reliable but limited to companies with an active LinkedIn presence. Trade shows and professional exhibitions are a complementary goldmine: B2B SaaS companies actively exhibit to reach buyers, which maps directly onto PE deal targets. But processing exhibitor lists was entirely manual — hundreds of company names, googled one by one, filtered inconsistently. One event could take half a day. Most were skipped entirely.',
           objective:
-            'Design a reusable Claude skill that turns any exhibitor list into a scored, thesis-filtered shortlist in minutes, pluggable into the broader sourcing workflow.',
-          pipeline: [
-            { label: 'Exhibitor list' },
-            { label: 'Claude Skill' },
-            { label: 'Score and filter' },
-            { label: 'Sourcing output' },
+            'Build a system of reusable Claude Code skills to automate the full conference sourcing pipeline — from discovering relevant events by sector and country, to extracting exhibitor lists from any format, to scoring every company against the investment thesis — so any team member can process a trade show in minutes.',
+          solution:
+            'Three chained Claude Code skills, each handling one stage of the pipeline. Together they turn a sector and a city into a scored, thesis-filtered shortlist with no manual work.\n\nThe system handles any exhibitor list format: public HTML pages, JavaScript-rendered catalogues (via Airtop headless browser), PDFs, or manual pastes. Scoring runs in two passes to keep costs near zero: a keyword filter first eliminates obvious non-fits (hardware manufacturers, associations, freight forwarders), then GPT-4o-mini scores the remainder at ~$0.02 per 200 companies, with a 0 / 0.5 / 1 rating and a rationale for each.',
+          flows: [
+            {
+              label: '/setup-exhibitor-sourcing — One-time Setup',
+              steps: ['Check jq + npx', 'Write API keys to ~/.zshrc', 'Install Linkup MCP', 'Install Google Sheets MCP', 'Install Exa MCP', 'Deploy skills to ~/.claude/commands'],
+              description: 'A one-command setup skill that configures the full environment: checks system dependencies (jq, npx), writes the required API keys to the shell profile, installs the three MCP servers (Linkup for web search, Google Sheets for export, Exa for semantic search), and copies the skills into ~/.claude/commands. Ends with a status table confirming every component.',
+            },
+            {
+              label: '/find-events — Event Discovery',
+              steps: ['Sector + city input', 'Linkup deep search (2024–2027)', 'Exhibitor page check', 'Accessibility rating', 'Tier classification', 'Google Sheet tracker'],
+              description: 'Given a sector and/or city, this skill runs 4–6 parallel Linkup MCP deep searches across 2024–2027 editions — past events are often more useful than future ones because their exhibitor lists are already published.\n\nFor each event found, the skill fetches the exhibitor page and classifies it: public (scrapable now), signup required, JS-only (handled by Airtop in the next skill), PDF download, or not found. It also checks whether exhibitor descriptions are available — events with descriptions allow more precise LLM scoring.\n\nResults are tiered (Tier 1 = pure software event, Tier 2 = vertical event with tech, Tier 3 = generalist salon) and exported to a Google Sheet with an Events tab and a pre-structured Exhibitors tab ready for /extract-exhibitors.',
+            },
+            {
+              label: '/extract-exhibitors — Scraping & Scoring',
+              steps: ['Airtop browser scrape', 'Pagination handling', 'Keyword exclusion pass', 'GPT-4o-mini scoring', 'Google Sheet export'],
+              description: 'Takes an event URL or PDF and extracts the full exhibitor list with the maximum available data — company name, website, description, category, country — using Airtop (handles JavaScript, pagination, and "Load more" buttons). Falls back to WebFetch, Linkup, or manual paste if needed.\n\nScoring runs in two passes. Pass 1 is free: a keyword filter instantly flags hardware manufacturers, associations, media, freight forwarders, and other non-fits as note 0. Pass 2 sends the remaining companies to GPT-4o-mini in batches of 50, which scores each 0 / 0.5 / 1 against the investment thesis using name, URL, and description together. Cost: ~$0.02 per 200 exhibitors.\n\nResults (note 1 and 0.5 only) are pushed into the Exhibitors tab of the existing Google Sheet, and the Events tab is updated with extraction status and SaaS count.',
+            },
           ],
           stats: [
-            { value: 'Any event', label: 'as input' },
-            { value: 'AI scoring', label: 'thesis-fit' },
-            { value: 'Reusable', label: 'plug and play' },
+            { value: '2 skills', label: 'chained pipeline' },
+            { value: '2-pass', label: 'scoring system' },
+            { value: '~$0.02', label: 'per 200 companies' },
           ],
-          stack: ['Claude', 'SKILL.md framework', 'Web scraping', 'N8N'],
-          solution:
-            'Reusable SKILL.md that takes any conference exhibitor list, scores companies against the thesis, and returns a ranked shortlist. Plugged into the broader sourcing workflow so conference prep now takes minutes instead of hours. Any team member can trigger it with a single paste.',
-          images: [
-            'Skill input - raw exhibitor list from any trade show',
-            'Output - ranked shortlist with thesis-fit rationale per company',
-          ],
+          stack: ['Claude Code', 'SKILL.md', 'Linkup MCP', 'Airtop', 'GPT-4o-mini', 'Google Sheets', 'Exa'],
         },
       },
       {
@@ -360,38 +368,6 @@ export const employers: Employer[] = [
           images: [
             'Email output - structured KPI summary with metric highlights',
             'N8N workflow - threshold logic and scheduled trigger setup',
-          ],
-        },
-      },
-      {
-        id: 'press-monitor',
-        title: 'Press and Mentions Monitor',
-        category: 'automation',
-        description:
-          'Automated tracker for press coverage and online mentions of the fund, its partners, and team members, filtered with Claude and delivered as a clean weekly digest.',
-        apps: ['N8N', 'Claude', 'RSS', 'Email digest'],
-        detail: {
-          problem:
-            'Tracking press mentions required constant manual searching with no reliable way to catch everything. Important coverage was often missed or found too late.',
-          objective:
-            'Build a fully automated media tracking system that covers all relevant channels and delivers clean, noise-free weekly digests to the team.',
-          pipeline: [
-            { label: 'RSS / Web' },
-            { label: 'N8N monitor' },
-            { label: 'Claude filter' },
-            { label: 'Weekly digest' },
-          ],
-          stats: [
-            { value: 'Automated', label: 'monitoring' },
-            { value: 'Fund + team', label: 'coverage scope' },
-            { value: 'Weekly', label: 'digest cadence' },
-          ],
-          stack: ['N8N', 'Claude', 'RSS feeds', 'Email digest'],
-          solution:
-            'Automated monitoring pipeline ingests RSS feeds and web sources, uses Claude to filter noise and assess relevance, then compiles a clean weekly digest. The team stays on top of media presence without any manual effort. Coverage scope includes the fund, all partners, and named team members.',
-          images: [
-            'Weekly digest email - curated mentions with relevance score',
-            'Coverage scope view - sources monitored per entity',
           ],
         },
       },
