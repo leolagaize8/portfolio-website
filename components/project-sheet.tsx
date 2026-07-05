@@ -168,33 +168,38 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                           <p key={j} className="text-[13px] leading-[1.85] text-muted-foreground">{para}</p>
                         ))}
                       </div>
+                      {flow.imageUrl && (
+                        <div className="mt-5 overflow-hidden rounded-xl border border-white/10 bg-black">
+                          <img src={flow.imageUrl} alt={flow.label} className="w-full opacity-90" />
+                        </div>
+                      )}
                     </motion.div>
                   ))}
                 </div>
               )}
 
-              {/* Key decisions */}
-              {project.detail.keyDecisions && (
-                <motion.section
+              {/* Standalone images — dashboard screenshots */}
+              {project.detail.images && project.detail.images.length > 0 && (
+                <motion.div
                   initial={{ opacity: 0, y: 14 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="mb-12"
+                  className="mb-12 space-y-4"
                 >
-                  <div className="mb-4 flex items-center gap-3">
+                  <div className="mb-5 flex items-center gap-3">
                     <div className="h-px w-8 bg-[#1e3a5f]/30" />
-                    <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground/50">Key decisions</p>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground/50">Dashboard & outputs</p>
                   </div>
-                  <div className="space-y-4">
-                    {project.detail.keyDecisions.split('\n\n').map((para, i) => (
-                      <p key={i} className="text-[14px] leading-[1.9] text-muted-foreground">{para}</p>
-                    ))}
-                  </div>
-                </motion.section>
+                  {project.detail.images.map((src, i) => (
+                    <div key={i} className="overflow-hidden rounded-2xl border border-border bg-white/30">
+                      <img src={src} alt="" className="w-full" />
+                    </div>
+                  ))}
+                </motion.div>
               )}
 
-              {/* Stats below text (only for projects with video) */}
+{/* Stats below text (only for projects with video) */}
               {project.detail.videoUrl && (
                 <motion.div
                   initial={{ opacity: 0, y: 16 }}

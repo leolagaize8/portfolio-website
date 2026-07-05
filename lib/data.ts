@@ -13,6 +13,7 @@ export interface Flow {
   label: string
   steps: string[]
   description: string
+  imageUrl?: string
 }
 
 export interface ProjectDetail {
@@ -25,7 +26,6 @@ export interface ProjectDetail {
   images: string[]
   videoUrl?: string
   flows?: Flow[]
-  keyDecisions?: string
 }
 
 export interface Project {
@@ -94,8 +94,6 @@ export const employers: Employer[] = [
                 'A second pipeline that re-activates dormant targets straight from the CRM — branching directly off the Attio deal flow to recontact companies set aside months ago.\n\nTracking: companies in the deal flow for 6+ months that were never recontacted (typically too early at first contact). Each carries a reason that automatically routes it to the matching Lemlist campaign.\n\nUnresponsive: ~1,350 companies stuck in the Unresponsive stage for 90+ days. A re-engagement agent pulls each company\'s data from Attio, scrapes its website, analyzes its positioning, and drafts a personalized intro. The analyst reviews and edits it in the app before it launches into Lemlist.\n\nThe agent runs as a scheduled Claude Code Routine on cloud infrastructure — triggered by a daily cron or an HTTP webhook from the webapp — so the whole team drives one shared agent through the UI.',
             },
           ],
-          keyDecisions:
-            'Scoring logic lives in N8N, not in Git — the app sends companies and receives scores without knowing how they\'re computed. The thesis prompt can be tuned without a redeploy.\n\nDrip-feed sourcing to cut LinkedIn ban risk — PhantomBuster runs in batches of 10 (~150 companies/day) via a Vercel Cron windowed to Paris working hours, draining a 2,000-prospect queue over 10–14 days instead of hammering LinkedIn in one burst.\n\nThe re-engagement agent\'s reasoning lives in a SKILL.md in a connected GitHub repo: full step-by-step process, annotated gold-standard examples, counter-examples, and a mandatory self-critique loop. Confidence (high / medium / low) is a first-class output — "low" is expected when scraped data is too thin, not a prompt for hallucination.\n\nMigrated N8N from Airtable nodes to raw HTTP Request nodes against the Neon API, rebuilding every node\'s data references and writing a multi-pass JSON parser to survive imperfect LLM outputs.',
           pipeline: [
             { label: 'Sales Navigator' },
             { label: 'PhantomBuster' },
@@ -127,34 +125,61 @@ export const employers: Employer[] = [
         },
       },
       {
-        id: 'deal-newsletter',
-        title: 'Deal Flow Newsletter',
+        id: 'coverage',
+        title: 'Coverage',
         category: 'automation',
         description:
-          'Automated internal newsletter monitoring deal sources, filtering companies matching the investment thesis with Claude, and delivering a structured digest to the team.',
-        apps: ['N8N', 'Claude', 'RSS', 'Email'],
+          'A market-coverage engine that reads external deal newsletters, filters them against the investment thesis, cross-checks every deal against the CRM, and emails the team a curated weekly digest backed by a live coverage dashboard.',
+        apps: ['N8N', 'GPT-4.1', 'Google Sheets', 'Attio', 'Gmail'],
         detail: {
           problem:
-            'Tracking new companies matching the thesis required constant manual monitoring across multiple sources. The team had no reliable signal without dedicated time spent searching.',
+            'The team relied on manually reading several VC and M&A newsletters to stay on top of the market — inconsistent, time-consuming, and impossible to measure. There was no systematic way to know which deals hitting the market were already tracked in the CRM, and which were being missed entirely.',
           objective:
-            'Create a zero-touch recurring pipeline that surfaces thesis-relevant companies from the web and delivers them directly to the team inbox on a set schedule.',
+            'Build an autonomous coverage engine that ingests deal newsletters from two sources, filters them against the investment thesis, cross-references every deal against the Attio CRM, and delivers a curated weekly digest — turning raw market noise into a measurable coverage KPI.',
+          solution:
+            'Three N8N workflows (40+ nodes) handle ingestion, CRM cross-referencing, and weekly reporting. Two source-specific parsers handle different newsletter formats; both converge on one schema, one Google Sheet, and one Attio-matching pattern. A Monday evening cron assembles the week\'s deals into a professional HTML digest and sends it to the full team.',
+          flows: [
+            {
+              label: 'Avolta — VC Rounds & Exits',
+              steps: ['Gmail Trigger', 'Text Parser', 'GPT-4.1 Filter', 'Google Sheets', 'Attio Match', 'Stage Lookup'],
+              imageUrl: '/coverage-n8n-avolta.png',
+              description:
+                'A resilient text parser handles Avolta\'s formatting quirks (quoted-printable breaks, starred vs. plain company headers), splits the newsletter into individual deals, and extracts amounts, tags, and dates. A GPT-4.1 pass then applies the thesis filter — keeping only clearly B2B software in the €2–25m range; dropping seed rounds, hardware, biotech, consumer, and anything outside the band.\n\nEvery kept deal is written to the Google Sheet, then cross-referenced against Attio: the workflow searches the CRM by company name, and on a match queries the deal-flow list to pull that company\'s current stage (Tracking, Unresponsive, Passed, Lost…). Each row is tagged in-CRM or not, and enriched with its stage.',
+            },
+            {
+              label: 'Fusacq — M&A & Advised Operations',
+              steps: ['Gmail Trigger', 'LLM Classify', 'LLM Extract', 'Loop + HTTP Scrape', 'GPT-4.1 Describe', 'Thesis Filter', 'Google Sheets', 'Attio Match'],
+              imageUrl: '/coverage-n8n-fusacq.png',
+              description:
+                'A stricter, multi-stage pipeline. A first LLM classifies whether the email even contains a real deal (vs. agendas, webinars, directory noise). If it does, a second LLM extracts each deal, then the workflow loops over them — fetching each source article, generating a grounded deal + company description under explicit anti-hallucination rules, and running a per-deal thesis filter.\n\nLLMs are boxed in as narrow, single-purpose steps (classify → extract → describe → filter), each with strict JSON-only outputs — so failures stay isolated and debuggable, rather than one fragile do-everything prompt.',
+            },
+            {
+              label: 'Weekly Digest & Dashboard',
+              steps: ['Schedule Trigger', 'Google Sheets', 'GPT-4.1 Render', 'Apps Script PDF', 'Gmail'],
+              imageUrl: '/coverage-n8n-reporting.png',
+              description:
+                'A scheduled workflow (Mondays, 5pm) reads the week\'s deals, computes the date window, and has GPT-4.1 render them into a fixed HTML email — normalizing company names, splitting Fundraising from Exits, deduplicating companies that appeared in both sources (keeping the richer Fusacq data), and writing a 2–3 line synthesis per deal.\n\nIt then calls a Google Apps Script endpoint that captures the live dashboard as a PDF, attaches it, and sends the Scale Reporting digest to the full team. The dashboard turns the raw log into coverage metrics: total deals seen, VC vs. M&A split, coverage rate, weekly volume chart, and breakdown by CRM stage.',
+            },
+          ],
           pipeline: [
-            { label: 'RSS / Sources' },
-            { label: 'N8N' },
-            { label: 'Claude filter' },
-            { label: 'Email digest' },
+            { label: 'Gmail' },
+            { label: 'N8N Parse' },
+            { label: 'GPT-4.1' },
+            { label: 'Attio Match' },
+            { label: 'Google Sheets' },
+            { label: 'Weekly Digest' },
           ],
           stats: [
-            { value: 'Recurring', label: 'auto-scheduled' },
-            { value: 'AI', label: 'thesis-fit filtering' },
-            { value: 'Zero', label: 'manual steps' },
+            { value: '192', label: 'deals tracked' },
+            { value: '24%', label: 'CRM coverage' },
+            { value: 'Weekly', label: 'auto-digest' },
           ],
-          stack: ['N8N', 'Claude', 'RSS feeds', 'SMTP'],
-          solution:
-            'Automated pipeline that monitors deal sources on a schedule, filters companies against the investment thesis using Claude, and delivers a structured digest. Replaced ad hoc manual monitoring entirely. The team receives a clean, scored list without opening a single browser tab.',
+          stack: ['N8N', 'GPT-4.1', 'Google Sheets', 'Google Apps Script', 'Attio API', 'Gmail'],
           images: [
-            'Email digest - structured company list with thesis-fit scores',
-            'N8N workflow - source monitoring and Claude filtering logic',
+            '/coverage-n8n-overview.png',
+            '/coverage-dashboard-stats.png',
+            '/coverage-chart-weekly.png',
+            '/coverage-chart-stages.png',
           ],
         },
       },
