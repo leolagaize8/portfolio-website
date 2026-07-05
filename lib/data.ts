@@ -34,6 +34,7 @@ export interface Project {
   category: ProjectCategory
   description: string
   apps: string[]
+  clientLogo?: string
   detail: ProjectDetail
 }
 
@@ -265,6 +266,7 @@ export const employers: Employer[] = [
         description:
           'Automated production of seasonal performance reports, from data pull to PDF formatting and distribution. Replaced a fully manual recurring process.',
         apps: ['N8N', 'Google Sheets', 'Claude', 'Canva'],
+        clientLogo: '/logo-camping-car-park.jpg',
         detail: {
           problem:
             'Seasonal reports were produced entirely by hand - data collected across multiple spreadsheets, manually formatted, then distributed to different stakeholders. Each cycle took significant time and was prone to errors.',
@@ -297,6 +299,7 @@ export const employers: Employer[] = [
         description:
           'AI agent deployed on Dust to make internal knowledge instantly queryable, onboarding docs, processes, and operational know-how answered via natural language.',
         apps: ['Dust', 'Claude', 'Notion', 'RAG'],
+        clientLogo: '/logo-camping-car-park.jpg',
         detail: {
           problem:
             'Internal knowledge was scattered across Notion pages and held by specific individuals. Onboarding took time, recurring questions went to the same people, and no one had a reliable way to find process documentation quickly.',
@@ -329,6 +332,7 @@ export const employers: Employer[] = [
         description:
           'Scheduled automation that reads KPI and alert data from Google Sheets and sends structured email updates to stakeholders automatically.',
         apps: ['N8N', 'Google Sheets', 'Gmail', 'Claude'],
+        clientLogo: '/logo-camping-car-park.jpg',
         detail: {
           problem:
             'Operational KPIs lived in Google Sheets but required manual checking and forwarding. Stakeholders were not consistently kept in the loop, and urgent threshold breaches could go unnoticed.',

@@ -121,13 +121,20 @@ export function ProjectCard({ project, employer, onClick, showEmployerLogo }: Pr
               <Monitor size={28} strokeWidth={1} />
             </div>
             {showEmployerLogo && (
-              <div className="absolute top-2 right-2 flex items-center rounded-md bg-white/90 px-2 py-1 shadow-sm backdrop-blur-sm">
+              <div className="absolute top-2 right-2 flex items-center gap-1.5 rounded-md bg-white/90 px-2 py-1 shadow-sm backdrop-blur-sm">
                 {employer.id === 'hexa-scale' ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src="/hexa-logo.svg" alt="Hexa Scale" className="h-4 w-auto" />
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src="/newfund-logo.png" alt="Newfund" className="h-3.5 w-auto" />
+                )}
+                {project.clientLogo && (
+                  <>
+                    <span className="text-[9px] text-muted-foreground/40">/</span>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={project.clientLogo} alt="Client" className="h-3.5 w-auto" />
+                  </>
                 )}
               </div>
             )}
