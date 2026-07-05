@@ -1,11 +1,10 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
-import { motion } from 'framer-motion'
-import { X, ArrowRight } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { X, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { employerAvatarColors } from '@/lib/colors'
 import { categoryLabels } from '@/lib/data'
 import type { Project, Employer } from '@/lib/data'
 
@@ -16,15 +15,62 @@ interface ProjectSheetProps {
   onClose: () => void
 }
 
-const categoryColors: Record<string, string> = {
-  webapp: 'bg-blue-100 text-blue-700 border-blue-200',
-  automation: 'bg-purple-100 text-purple-700 border-purple-200',
-  'ai-agent': 'bg-emerald-100 text-emerald-700 border-emerald-200',
-  research: 'bg-amber-100 text-amber-700 border-amber-200',
+function ImageCarousel({ images }: { images: string[] }) {
+  const [active, setActive] = useState(0)
+
+  if (images.length === 0) return null
+
+  if (images.length === 1) {
+    return (
+      <div className="overflow-hidden rounded-2xl border border-border bg-white/30">
+        <img src={images[0]} alt="" className="w-full" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-border bg-white/30">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={active}
+          src={images[active]}
+          alt=""
+          className="w-full"
+          initial={{ opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -16 }}
+          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </AnimatePresence>
+
+      <button
+        onClick={() => setActive(i => (i - 1 + images.length) % images.length)}
+        className="absolute left-3 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white/90 text-muted-foreground shadow-sm transition-colors hover:text-foreground"
+      >
+        <ChevronLeft size={14} strokeWidth={1.5} />
+      </button>
+      <button
+        onClick={() => setActive(i => (i + 1) % images.length)}
+        className="absolute right-3 top-1/2 z-10 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white/90 text-muted-foreground shadow-sm transition-colors hover:text-foreground"
+      >
+        <ChevronRight size={14} strokeWidth={1.5} />
+      </button>
+
+      <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            className={cn('h-1.5 rounded-full transition-all', i === active ? 'w-4 bg-[#1e3a5f]' : 'w-1.5 bg-[#1e3a5f]/25')}
+          />
+        ))}
+      </div>
+    </div>
+  )
 }
 
 export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetProps) {
-  const avatarColor = employerAvatarColors[employer.color]
+  const hasCarousel = project.detail.images && project.detail.images.length > 0
 
   return (
     <DialogPrimitive.Root open={open} onOpenChange={(o) => !o && onClose()}>
@@ -55,7 +101,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
             </div>
           </div>
 
-          {/* Floating X button — top right */}
+          {/* Floating X button */}
           <button
             onClick={onClose}
             className="absolute top-4 right-6 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white shadow-md text-muted-foreground transition-colors hover:text-foreground"
@@ -85,8 +131,20 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 </p>
               </motion.div>
 
-              {/* Video (if available) or Stats */}
-              {project.detail.videoUrl ? (
+              {/* Carousel — projects with images (shown before stats) */}
+              {hasCarousel && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.04, ease: [0.22, 1, 0.36, 1] }}
+                  className="mb-10"
+                >
+                  <ImageCarousel images={project.detail.images} />
+                </motion.div>
+              )}
+
+              {/* Video (projects with video) */}
+              {project.detail.videoUrl && (
                 <motion.div
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -95,21 +153,22 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 >
                   <video src={project.detail.videoUrl} controls playsInline className="w-full" />
                 </motion.div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-                  className="mb-12 grid grid-cols-3 gap-3"
-                >
-                  {project.detail.stats.map((stat) => (
-                    <div key={stat.label} className="flex flex-col items-center justify-center rounded-2xl border border-border bg-white/70 px-4 py-6 text-center backdrop-blur-sm">
-                      <span className="mb-1 font-bold text-[1.5rem] leading-none" style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}>{stat.value}</span>
-                      <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground/60">{stat.label}</span>
-                    </div>
-                  ))}
-                </motion.div>
               )}
+
+              {/* Stats */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+                className="mb-12 grid grid-cols-3 gap-3"
+              >
+                {project.detail.stats.map((stat) => (
+                  <div key={stat.label} className="flex flex-col items-center justify-center rounded-2xl border border-border bg-white/70 px-4 py-6 text-center backdrop-blur-sm">
+                    <span className="mb-1 font-bold text-[1.5rem] leading-none" style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}>{stat.value}</span>
+                    <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground/60">{stat.label}</span>
+                  </div>
+                ))}
+              </motion.div>
 
               {/* Sections */}
               <div className="space-y-12 mb-12">
@@ -117,7 +176,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                   { label: 'Problem', content: project.detail.problem },
                   { label: 'Objective', content: project.detail.objective },
                   { label: 'Solution', content: project.detail.solution },
-                ].map(({ label, content }, i) => (
+                ].filter(s => s.content).map(({ label, content }, i) => (
                   <motion.section
                     key={label}
                     initial={{ opacity: 0, y: 14 }}
@@ -138,7 +197,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 ))}
               </div>
 
-              {/* Flows — visual pipeline blocks */}
+              {/* Flows — visual pipeline blocks with inline screenshots */}
               {project.detail.flows && project.detail.flows.length > 0 && (
                 <div className="mb-12 space-y-6">
                   {project.detail.flows.map((flow, i) => (
@@ -178,28 +237,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 </div>
               )}
 
-              {/* Standalone images — dashboard screenshots */}
-              {project.detail.images && project.detail.images.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 14 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="mb-12 space-y-4"
-                >
-                  <div className="mb-5 flex items-center gap-3">
-                    <div className="h-px w-8 bg-[#1e3a5f]/30" />
-                    <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground/50">Dashboard & outputs</p>
-                  </div>
-                  {project.detail.images.map((src, i) => (
-                    <div key={i} className="overflow-hidden rounded-2xl border border-border bg-white/30">
-                      <img src={src} alt="" className="w-full" />
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-
-{/* Stats below text (only for projects with video) */}
+              {/* Stats below text — video projects only */}
               {project.detail.videoUrl && (
                 <motion.div
                   initial={{ opacity: 0, y: 16 }}
@@ -219,8 +257,8 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
 
               <div className="h-px bg-border/60 mb-10" />
 
-              {/* Pipeline — hidden for projects with video (flows explained in text) */}
-              {!project.detail.videoUrl && (
+              {/* Pipeline — hidden for projects with video or flows */}
+              {!project.detail.videoUrl && (!project.detail.flows || project.detail.flows.length === 0) && (
                 <motion.section
                   initial={{ opacity: 0, y: 14 }}
                   whileInView={{ opacity: 1, y: 0 }}
