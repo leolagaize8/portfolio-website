@@ -176,7 +176,9 @@ export const employers: Employer[] = [
           ],
           stack: ['N8N', 'GPT-4.1', 'Google Sheets', 'Google Apps Script', 'Attio API', 'Gmail'],
           images: [
-            '/coverage-dashboard.png',
+            '/coverage-slide-stats.png',
+            '/coverage-slide-weekly.png',
+            '/coverage-slide-stages.png',
             '/coverage-n8n-overview.png',
           ],
         },
