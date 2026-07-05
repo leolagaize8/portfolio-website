@@ -38,18 +38,20 @@ function ImageCarousel({ images }: { images: string[] }) {
         />
       ))}
 
-      <AnimatePresence mode="wait">
-        <motion.img
-          key={validImages[realActive]}
-          src={validImages[realActive]}
-          alt=""
-          className="w-full"
-          initial={{ opacity: 0, x: 16 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -16 }}
-          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-        />
-      </AnimatePresence>
+      <div className="flex h-[520px] items-center justify-center bg-white/20">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={validImages[realActive]}
+            src={validImages[realActive]}
+            alt=""
+            className="max-h-full max-w-full object-contain"
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -16 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </AnimatePresence>
+      </div>
 
       {validImages.length > 1 && (
         <>
