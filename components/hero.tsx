@@ -72,10 +72,10 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-7 text-[clamp(2rem,3.6vw,3.6rem)] font-bold leading-[1.1] tracking-normal"
-            style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}
+            className="mb-7 text-[clamp(2rem,3.6vw,3.6rem)] leading-[1.1] tracking-normal"
+            style={{ color: '#1e3a5f', fontFamily: 'var(--font-poppins)', fontWeight: 400 }}
           >
-            Building automations and AI products for investment funds and their portcos
+            Building automations and AI products for funds
           </motion.h1>
 
           {/* Sub text */}

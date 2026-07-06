@@ -3,13 +3,13 @@
 import { motion } from 'framer-motion'
 import { Mail, Linkedin, ArrowUpRight } from 'lucide-react'
 
-const EMAIL = 'leo.lagaize@hexa.com'
+const EMAIL = 'leo.lagaize@icloud.com'
 const LINKEDIN_URL = 'https://www.linkedin.com/in/leolagaize/'
 
 const contacts = [
   {
     label: 'Email',
-    value: 'leo.lagaize@hexa.com',
+    value: 'leo.lagaize@icloud.com',
     href: `mailto:${EMAIL}`,
     icon: Mail,
     description: 'Best way to reach me',

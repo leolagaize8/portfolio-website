@@ -135,7 +135,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
               >
                 <DialogPrimitive.Title
                   className="mb-4 font-bold leading-tight tracking-tight"
-                  style={{ fontFamily: 'var(--font-urbanist)', fontSize: 'clamp(2.5rem,5vw,4rem)', color: '#1e3a5f' }}
+                  style={{ fontFamily: 'var(--font-poppins)', fontSize: 'clamp(2.5rem,5vw,4rem)', color: '#1e3a5f' }}
                 >
                   {project.title}
                 </DialogPrimitive.Title>
@@ -177,7 +177,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
               >
                 {project.detail.stats.map((stat) => (
                   <div key={stat.label} className="flex flex-col items-center justify-center rounded-2xl border border-border bg-white/70 px-4 py-6 text-center backdrop-blur-sm">
-                    <span className="mb-1 font-bold text-[1.5rem] leading-none" style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}>{stat.value}</span>
+                    <span className="mb-1 font-bold text-[1.5rem] leading-none" style={{ color: '#1e3a5f', fontFamily: 'var(--font-poppins)' }}>{stat.value}</span>
                     <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground/60">{stat.label}</span>
                   </div>
                 ))}
@@ -278,7 +278,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                 >
                   {project.detail.stats.map((stat) => (
                     <div key={stat.label} className="flex flex-col items-center justify-center rounded-2xl border border-border bg-white/70 px-4 py-6 text-center backdrop-blur-sm">
-                      <span className="mb-1 font-bold text-[1.5rem] leading-none" style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}>{stat.value}</span>
+                      <span className="mb-1 font-bold text-[1.5rem] leading-none" style={{ color: '#1e3a5f', fontFamily: 'var(--font-poppins)' }}>{stat.value}</span>
                       <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground/60">{stat.label}</span>
                     </div>
                   ))}

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-const EMAIL = 'leo.lagaize@hexa.com'
+const EMAIL = 'leo.lagaize@icloud.com'
 const LINKEDIN_URL = 'https://www.linkedin.com/in/leolagaize/'
 const CV_URL = '/TODO-cv.pdf'
 
