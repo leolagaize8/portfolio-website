@@ -337,6 +337,7 @@ export const employers: Employer[] = [
           'AI agent deployed on Dust to make internal knowledge instantly queryable, onboarding docs, processes, and operational know-how answered via natural language.',
         apps: ['Dust', 'Claude', 'Notion', 'RAG'],
         clientLogo: '/logo-camping-car-park-trimmed.png',
+        thumbnailUrl: '/knowledge-agent-thumb.png',
         detail: {
           problem:
             'Internal knowledge was scattered across Notion pages and held by specific individuals. Onboarding took time, recurring questions went to the same people, and no one had a reliable way to find process documentation quickly.',
@@ -356,10 +357,6 @@ export const employers: Employer[] = [
           stack: ['Dust', 'Claude', 'Notion', 'Internal docs', 'RAG'],
           solution:
             'Dust agent connected to the full internal knowledge base. Team members type questions in natural language and get accurate, sourced answers in seconds. Onboarding time dropped, recurring questions stopped landing in Slack, and process documentation became genuinely useful.',
-          images: [
-            'Dust agent interface - natural language query with sourced answer',
-            'Knowledge base structure - Notion docs indexed and searchable',
-          ],
         },
       },
       {
@@ -370,6 +367,7 @@ export const employers: Employer[] = [
           'Scheduled automation that reads KPI and alert data from Google Sheets and sends structured email updates to stakeholders automatically.',
         apps: ['N8N', 'Google Sheets', 'Gmail', 'Claude'],
         clientLogo: '/logo-camping-car-park-trimmed.png',
+        thumbnailUrl: '/kpi-alerts-thumb.png',
         detail: {
           problem:
             'Operational KPIs lived in Google Sheets but required manual checking and forwarding. Stakeholders were not consistently kept in the loop, and urgent threshold breaches could go unnoticed.',
@@ -389,10 +387,6 @@ export const employers: Employer[] = [
           stack: ['N8N', 'Google Sheets API', 'Gmail', 'Claude'],
           solution:
             'N8N workflow reads KPI data from Sheets on a schedule, uses Claude to generate a clean structured summary with context, and sends it to the right stakeholders. Threshold logic triggers immediate alerts when key metrics go out of range. Manual copy-paste reporting eliminated entirely.',
-          images: [
-            'Email output - structured KPI summary with metric highlights',
-            'N8N workflow - threshold logic and scheduled trigger setup',
-          ],
         },
       },
     ],
