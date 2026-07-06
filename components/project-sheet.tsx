@@ -202,13 +202,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                       <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground/50">{label}</p>
                     </div>
                     {label === 'Solution' && project.detail.overviewImageUrl && (
-                      <div
-                        className="mb-6 overflow-hidden rounded-xl border border-border bg-black"
-                        ref={(el) => {
-                          const img = el?.querySelector('img')
-                          if (img) img.onerror = () => { if (el) el.style.display = 'none' }
-                        }}
-                      >
+                      <div className="mb-6 overflow-hidden rounded-xl border border-border bg-black">
                         <img src={project.detail.overviewImageUrl} alt="Overview" className="w-full" />
                       </div>
                     )}
@@ -228,9 +222,8 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                     <motion.div
                       key={flow.label}
                       initial={{ opacity: 0, y: 14 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.3 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
                       className="rounded-2xl border border-border bg-white/50 p-6 backdrop-blur-sm"
                     >
                       <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground/50">{flow.label}</p>
@@ -251,14 +244,8 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                           <p key={j} className="text-[13px] leading-[1.85] text-muted-foreground">{para}</p>
                         ))}
                       </div>
-                                      {flow.imageUrl && (
-                        <div
-                          className="mt-5 overflow-hidden rounded-xl border border-white/10 bg-black"
-                          ref={(el) => {
-                            const img = el?.querySelector('img')
-                            if (img) img.onerror = () => { if (el) el.style.display = 'none' }
-                          }}
-                        >
+                      {flow.imageUrl && (
+                        <div className="mt-5 overflow-hidden rounded-xl border border-white/10 bg-black">
                           <img src={flow.imageUrl} alt={flow.label} className="w-full opacity-90" />
                         </div>
                       )}
