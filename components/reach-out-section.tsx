@@ -76,10 +76,9 @@ export function ReachOutSection() {
                 initial={{ opacity: 0, x: 16 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.99 }}
-                transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.18, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
                 className="group flex items-center justify-between rounded-xl border border-border bg-card px-5 py-4 shadow-sm hover:shadow-md hover:border-foreground/15"
               >
                 <div className="flex items-center gap-3">
