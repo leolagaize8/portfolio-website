@@ -63,12 +63,12 @@ export function ProjectModal({ project, employer, open, onClose }: ProjectModalP
 
           <Section label="Pipeline">
             <div className="flex flex-wrap items-center gap-x-1.5 gap-y-2">
-              {project.detail.pipeline.map((step, i) => (
+              {project.detail.pipeline!.map((step, i) => (
                 <React.Fragment key={step.label}>
                   <span className="rounded-lg border border-border bg-muted/50 px-2.5 py-1 font-mono text-[11px] text-foreground">
                     {step.label}
                   </span>
-                  {i < project.detail.pipeline.length - 1 && (
+                  {i < project.detail.pipeline!.length - 1 && (
                     <ArrowRight size={11} className="shrink-0 text-muted-foreground/40" strokeWidth={1.5} />
                   )}
                 </React.Fragment>

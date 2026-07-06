@@ -152,7 +152,7 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                   transition={{ duration: 0.4, delay: 0.04, ease: [0.22, 1, 0.36, 1] }}
                   className="mb-10"
                 >
-                  <ImageCarousel images={project.detail.images} />
+                  <ImageCarousel images={project.detail.images!} />
                 </motion.div>
               )}
 
@@ -300,12 +300,12 @@ export function ProjectSheet({ project, employer, open, onClose }: ProjectSheetP
                     Pipeline
                   </h3>
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
-                    {project.detail.pipeline.map((step, i) => (
+                    {project.detail.pipeline!.map((step, i) => (
                       <React.Fragment key={step.label}>
                         <span className="rounded-xl border border-border bg-white/70 px-3 py-1.5 text-[12px] font-medium text-foreground shadow-sm">
                           {step.label}
                         </span>
-                        {i < project.detail.pipeline.length - 1 && (
+                        {i < project.detail.pipeline!.length - 1 && (
                           <ArrowRight size={11} className="shrink-0 text-muted-foreground/40" strokeWidth={1.5} />
                         )}
                       </React.Fragment>

@@ -20,6 +20,10 @@ export const categoryColors: Record<
     badge: 'text-amber-700 bg-amber-50 border-amber-100 dark:text-amber-400 dark:bg-amber-950/40 dark:border-amber-900/50',
     dot: 'bg-amber-500 dark:bg-amber-400',
   },
+  'claude-skill': {
+    badge: 'text-emerald-700 bg-emerald-50 border-emerald-100 dark:text-emerald-400 dark:bg-emerald-950/40 dark:border-emerald-900/50',
+    dot: 'bg-emerald-500 dark:bg-emerald-400',
+  },
 }
 
 export const employerAvatarColors = {

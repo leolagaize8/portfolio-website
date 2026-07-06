@@ -19,11 +19,11 @@ export interface Flow {
 export interface ProjectDetail {
   problem: string
   objective: string
-  pipeline: PipelineStep[]
+  pipeline?: PipelineStep[]
   stats: [StatItem, StatItem, StatItem]
   stack: string[]
   solution: string
-  images: string[]
+  images?: string[]
   videoUrl?: string
   overviewImageUrl?: string
   flows?: Flow[]
