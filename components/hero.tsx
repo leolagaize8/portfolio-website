@@ -75,7 +75,7 @@ export function Hero() {
             className="mb-7 text-[clamp(2rem,3.6vw,3.6rem)] font-bold leading-[1.1] tracking-normal"
             style={{ color: '#1e3a5f', fontFamily: 'var(--font-urbanist)' }}
           >
-            Building cool AI products for investment funds and their portcos.
+            Building automations and AI products for investment funds and their portcos
           </motion.h1>
 
           {/* Sub text */}
@@ -99,30 +99,20 @@ export function Hero() {
           >
             <button
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center gap-2 rounded-xl border border-border bg-white px-6 py-3.5 text-[14px] font-medium text-foreground shadow-sm transition-all hover:shadow-md hover:border-foreground/20"
+              className="group inline-flex items-center gap-2 rounded-xl border border-border bg-white px-6 py-3.5 text-[14px] font-medium text-foreground shadow-sm transition-all duration-200 hover:shadow-md hover:border-foreground/20 hover:-translate-y-0.5 hover:scale-[1.02] active:scale-[0.98] active:translate-y-0"
             >
               View my projects
-              <ArrowUpRight size={14} strokeWidth={1.5} />
+              <ArrowUpRight size={14} strokeWidth={1.5} className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </button>
             <button
               onClick={() => document.getElementById('reach-out')?.scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center rounded-xl px-6 py-3.5 text-[14px] font-medium text-background transition-opacity hover:opacity-80"
+              className="inline-flex items-center rounded-xl px-6 py-3.5 text-[14px] font-medium text-background transition-all duration-200 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-lg hover:shadow-[#1e3a5f]/30 active:scale-[0.98] active:translate-y-0"
               style={{ backgroundColor: '#1e3a5f' }}
             >
               Get in touch
             </button>
           </motion.div>
 
-          {/* Location */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-10 flex items-center gap-1.5 font-mono text-[10px] text-muted-foreground/40"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-            Hexa / Newfund — Paris
-          </motion.div>
         </div>
 
         {/* Right: photo */}

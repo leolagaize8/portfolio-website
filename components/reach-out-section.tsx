@@ -57,9 +57,6 @@ export function ReachOutSection() {
             <p className="mb-6 text-[14px] leading-[1.85] text-muted-foreground">
               Whether you want to talk about a project, an opportunity, or just exchange ideas around AI, automation, or startups — I&apos;m always happy to chat. Feel free to reach out directly.
             </p>
-            <p className="text-[13px] text-muted-foreground/60">
-              I typically respond within 24 hours.
-            </p>
           </motion.div>
 
           {/* Right: contact cards */}
@@ -80,22 +77,24 @@ export function ReachOutSection() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                whileHover={{ x: 4 }}
-                className="group flex items-center justify-between rounded-xl border border-border bg-card px-6 py-5 shadow-sm transition-shadow hover:shadow-md"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.99 }}
+                transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                className="group flex items-center justify-between rounded-xl border border-border bg-card px-5 py-4 shadow-sm hover:shadow-md hover:border-foreground/15"
               >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-background">
-                    <contact.icon size={16} strokeWidth={1.5} className="text-muted-foreground" />
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-background transition-colors duration-200 group-hover:bg-[#1e3a5f]/5 group-hover:border-[#1e3a5f]/15">
+                    <contact.icon size={14} strokeWidth={1.5} className="text-muted-foreground/70 transition-colors duration-200 group-hover:text-[#1e3a5f]" />
                   </div>
                   <div>
                     <p className="text-[13px] font-medium text-foreground">{contact.label}</p>
-                    <p className="font-mono text-[11px] text-muted-foreground/60">{contact.value}</p>
+                    <p className="font-mono text-[11px] text-muted-foreground/50">{contact.value}</p>
                   </div>
                 </div>
                 <ArrowUpRight
-                  size={16}
+                  size={14}
                   strokeWidth={1.5}
-                  className="text-muted-foreground/30 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground/60"
+                  className="text-muted-foreground/20 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#1e3a5f]/60"
                 />
               </motion.a>
             ))}
