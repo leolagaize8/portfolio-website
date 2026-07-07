@@ -15,12 +15,12 @@ export function Nav() {
       <div className="relative flex h-13 w-full max-w-2xl items-center justify-center gap-1 overflow-hidden rounded-2xl border border-border bg-card/90 px-5 shadow-sm backdrop-blur-md">
 
         {/* Logo */}
-        <Link
-          href="/"
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="mr-auto font-mono text-[13px] font-semibold tracking-tight text-[#1e3a5f] transition-colors hover:text-[#1e3a5f]/70"
         >
           Leo Lagaize
-        </Link>
+        </button>
 
         {/* Nav links */}
         <button
