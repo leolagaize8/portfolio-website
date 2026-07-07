@@ -323,10 +323,6 @@ export const employers: Employer[] = [
           stack: ['N8N', 'Google Sheets', 'Claude', 'PDF generation'],
           solution:
             'Automated full report production pulls data from Sheets, formats it via Claude into a structured narrative, generates a clean PDF, and distributes it to stakeholders. A process that previously required hours of manual work now runs on schedule with a single trigger.',
-          images: [
-            'Generated PDF report - structured seasonal performance summary',
-            'N8N workflow - data pull, formatting, and distribution pipeline',
-          ],
         },
       },
       {
