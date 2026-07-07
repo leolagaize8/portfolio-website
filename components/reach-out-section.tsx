@@ -82,8 +82,8 @@ export function ReachOutSection() {
                 className="group flex items-center justify-between rounded-xl border border-border bg-card px-5 py-4 shadow-sm hover:shadow-md hover:border-foreground/15"
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-background transition-colors duration-200 group-hover:bg-[#1e3a5f]/5 group-hover:border-[#1e3a5f]/15">
-                    <contact.icon size={14} strokeWidth={1.5} className="text-muted-foreground/70 transition-colors duration-200 group-hover:text-[#1e3a5f]" />
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#1e3a5f]/20 bg-[#1e3a5f]/8 transition-colors duration-200 group-hover:bg-[#1e3a5f]/15 group-hover:border-[#1e3a5f]/30">
+                    <contact.icon size={14} strokeWidth={1.5} className="text-[#1e3a5f] transition-colors duration-200" />
                   </div>
                   <div>
                     <p className="text-[13px] font-medium text-foreground">{contact.label}</p>
