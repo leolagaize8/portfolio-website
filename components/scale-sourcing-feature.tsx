@@ -146,7 +146,7 @@ export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeaturePr
         {/* View project — absolute top right */}
         <button
           onClick={onOpen}
-          className="group absolute top-9 right-12 z-10 inline-flex items-center gap-2.5 border border-white/20 px-5 py-2.5 text-[12px] font-medium text-white/60 transition-all hover:border-white/50 hover:text-white"
+          className="group absolute top-9 right-12 z-10 inline-flex items-center gap-2.5 rounded-xl border border-white/20 px-5 py-2.5 text-[12px] font-medium text-white/60 transition-all hover:border-white/50 hover:text-white"
         >
           View project
           <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
@@ -162,9 +162,13 @@ export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeaturePr
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h3 className="mb-5 font-heading text-[clamp(2.2rem,4vw,3.6rem)] font-extrabold leading-[0.95] tracking-tight text-white">
-              Scale<br />Sourcing
-            </h3>
+            <div className="mb-5 flex items-start gap-5 pl-1">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo-hexa-nobg.svg" alt="Hexa" className="mt-1 h-20 w-auto shrink-0" />
+              <h3 className="font-heading text-[clamp(2.2rem,4vw,3.6rem)] font-extrabold leading-[0.95] tracking-tight text-white">
+                Scale<br />Sourcing
+              </h3>
+            </div>
 
             <p className="mb-10 max-w-[420px] text-[14px] leading-[1.85] text-white/55">
               {project.description}
