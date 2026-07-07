@@ -47,7 +47,7 @@ export function Nav() {
         {/* Scroll progress — bottom edge of pill */}
         <motion.div
           style={{ scaleX, transformOrigin: '0%' }}
-          className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#3b82f6]"
+          className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#1e3a5f]"
         />
 
       </div>
