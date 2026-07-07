@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback } from 'react'
+import { useRef, useCallback, useEffect } from 'react'
 import { motion, useMotionValue, animate } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { ProjectCard } from './project-card'
@@ -11,33 +11,57 @@ interface AutomationsBlockProps {
   onProjectClick: (project: Project, employer: Employer) => void
 }
 
-const STEP = 400 // card width (380) + gap (20)
+const STEP = 400   // card width (380) + gap (20)
+const SPEED = 65   // px/s auto-scroll speed
 
 export function AutomationsBlock({ items, onProjectClick }: AutomationsBlockProps) {
   const N = items.length
-  // Triple-buffer for seamless infinite loop
   const tripled = [...items, ...items, ...items]
 
-  // Start at the middle copy so we can go left or right freely
   const xMV = useMotionValue(-(N * STEP))
+  const hoveredRef = useRef(false)
+  const animatingRef = useRef(false)
+  const rafRef = useRef<number>(0)
+  const lastTimeRef = useRef<number>(0)
+
+  const normalize = useCallback(() => {
+    const val = xMV.get()
+    if (val < -(2 * N - 1) * STEP) xMV.set(val + N * STEP)
+    else if (val > -STEP) xMV.set(val - N * STEP)
+  }, [N, xMV])
+
+  // Auto-scroll RAF loop
+  useEffect(() => {
+    const tick = (time: number) => {
+      if (!hoveredRef.current && !animatingRef.current) {
+        const dt = lastTimeRef.current ? (time - lastTimeRef.current) / 1000 : 0
+        if (dt < 0.1) {
+          xMV.set(xMV.get() - SPEED * dt)
+          normalize()
+        }
+      }
+      lastTimeRef.current = time
+      rafRef.current = requestAnimationFrame(tick)
+    }
+    rafRef.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [normalize, xMV])
 
   const move = useCallback((dir: 'left' | 'right') => {
-    const current = xMV.get()
-    const target = current + (dir === 'left' ? STEP : -STEP)
-
+    animatingRef.current = true
+    const nearest = Math.round(xMV.get() / STEP) * STEP
+    const target = nearest + (dir === 'left' ? STEP : -STEP)
     animate(xMV, target, {
       type: 'spring',
       stiffness: 280,
       damping: 34,
       mass: 0.8,
       onComplete: () => {
-        // Silently snap back to middle copy — invisible because copies are identical
-        const val = xMV.get()
-        if (val < -(2 * N - 1) * STEP) xMV.set(val + N * STEP)
-        else if (val > -STEP) xMV.set(val - N * STEP)
+        normalize()
+        animatingRef.current = false
       },
     })
-  }, [N, xMV])
+  }, [normalize, xMV])
 
   return (
     <div>
@@ -57,15 +81,12 @@ export function AutomationsBlock({ items, onProjectClick }: AutomationsBlockProp
 
       {/* Carousel */}
       <div className="relative">
-        {/* Left arrow — overlaps the first visible card */}
         <button
           onClick={() => move('left')}
           className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[#1e3a5f] text-white shadow-lg transition-transform duration-150 hover:scale-105 active:scale-95"
         >
           <ChevronLeft size={18} strokeWidth={2} />
         </button>
-
-        {/* Right arrow */}
         <button
           onClick={() => move('right')}
           className="absolute right-4 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[#1e3a5f] text-white shadow-lg transition-transform duration-150 hover:scale-105 active:scale-95"
@@ -73,16 +94,17 @@ export function AutomationsBlock({ items, onProjectClick }: AutomationsBlockProp
           <ChevronRight size={18} strokeWidth={2} />
         </button>
 
-        {/* Edge fade hints */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-20 z-[5] bg-gradient-to-r from-background/60 to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-20 z-[5] bg-gradient-to-l from-background/60 to-transparent" />
+        {/* Edge fades */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-20 z-[5] bg-gradient-to-r from-background/70 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-20 z-[5] bg-gradient-to-l from-background/70 to-transparent" />
 
-        {/* Track */}
-        <div className="overflow-hidden">
-          <motion.div
-            className="flex gap-5 pl-4"
-            style={{ x: xMV }}
-          >
+        {/* Track — pause on hover */}
+        <div
+          className="overflow-hidden"
+          onMouseEnter={() => { hoveredRef.current = true }}
+          onMouseLeave={() => { hoveredRef.current = false }}
+        >
+          <motion.div className="flex gap-5 pl-4" style={{ x: xMV }}>
             {tripled.map(({ project, employer }, i) => (
               <div key={`${project.id}-${i}`} className="w-[380px] shrink-0">
                 <ProjectCard
