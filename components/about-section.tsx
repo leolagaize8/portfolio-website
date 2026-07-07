@@ -122,7 +122,7 @@ export function AboutSection() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: '-20px' }}
                   transition={{ duration: 0.4, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex items-center gap-4 rounded-xl px-3 py-4 transition-colors hover:bg-muted/50"
+                  className="flex items-center gap-4 rounded-xl px-3 py-4 transition-colors hover:bg-[#1e3a5f]/[0.06]"
                 >
                   <div className={`flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl ${exp.logo ? exp.logoBg : exp.color} border border-border`}>
                     {exp.logo ? (
