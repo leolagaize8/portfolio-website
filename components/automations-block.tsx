@@ -83,13 +83,13 @@ export function AutomationsBlock({ items, onProjectClick }: AutomationsBlockProp
       <div className="relative">
         <button
           onClick={() => move('left')}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[#1e3a5f] text-white shadow-lg transition-transform duration-150 hover:scale-105 active:scale-95"
+          className="absolute left-8 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-[#1e3a5f] text-white shadow-lg transition-transform duration-150 hover:scale-105 active:scale-95"
         >
           <ChevronLeft size={18} strokeWidth={2} />
         </button>
         <button
           onClick={() => move('right')}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[#1e3a5f] text-white shadow-lg transition-transform duration-150 hover:scale-105 active:scale-95"
+          className="absolute right-8 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-[#1e3a5f] text-white shadow-lg transition-transform duration-150 hover:scale-105 active:scale-95"
         >
           <ChevronRight size={18} strokeWidth={2} />
         </button>
