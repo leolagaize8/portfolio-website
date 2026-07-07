@@ -12,12 +12,12 @@ export function Nav() {
 
   return (
     <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-6">
-      <div className="relative flex h-13 w-full max-w-2xl items-center justify-center gap-1 overflow-hidden rounded-2xl border border-[#c8d8f0]/60 bg-[#dce8f7]/80 px-5 shadow-sm backdrop-blur-md">
+      <div className="relative flex h-13 w-full max-w-2xl items-center justify-center gap-1 overflow-hidden rounded-2xl border border-border bg-card/90 px-5 shadow-sm backdrop-blur-md">
 
         {/* Logo */}
         <Link
           href="/"
-          className="mr-auto font-mono text-[13px] font-semibold tracking-tight text-foreground transition-colors hover:text-foreground/70"
+          className="mr-auto font-mono text-[13px] font-semibold tracking-tight text-[#1e3a5f] transition-colors hover:text-[#1e3a5f]/70"
         >
           Leo Lagaize
         </Link>
@@ -39,7 +39,7 @@ export function Nav() {
         {/* Get in touch — CTA button */}
         <button
           onClick={() => scrollTo('reach-out')}
-          className="ml-2 inline-flex h-8 items-center rounded-lg bg-foreground px-4 text-[13px] font-medium text-background transition-opacity hover:opacity-80"
+          className="ml-2 inline-flex h-8 items-center rounded-lg bg-[#1e3a5f] px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-80"
         >
           Get in touch
         </button>
