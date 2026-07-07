@@ -304,6 +304,7 @@ export const employers: Employer[] = [
           'Automated production of seasonal performance reports, from data pull to PDF formatting and distribution. Replaced a fully manual recurring process.',
         apps: ['N8N', 'Google Sheets', 'Claude', 'Canva'],
         clientLogo: '/logo-camping-car-park-trimmed.png',
+        thumbnailUrl: '/summer-report-thumb.png',
         detail: {
           problem:
             'Seasonal reports were produced entirely by hand - data collected across multiple spreadsheets, manually formatted, then distributed to different stakeholders. Each cycle took significant time and was prone to errors.',
