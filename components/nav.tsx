@@ -12,7 +12,7 @@ export function Nav() {
 
   return (
     <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-6">
-      <div className="relative flex h-13 w-full max-w-2xl items-center justify-center gap-1 overflow-hidden rounded-2xl border border-border bg-card/90 px-5 shadow-sm backdrop-blur-md">
+      <div className="relative flex h-13 w-full max-w-2xl items-center justify-center gap-1 overflow-hidden rounded-2xl border border-[#c8d8f0]/60 bg-[#dce8f7]/80 px-5 shadow-sm backdrop-blur-md">
 
         {/* Logo */}
         <Link
