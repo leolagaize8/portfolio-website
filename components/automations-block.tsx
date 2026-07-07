@@ -65,20 +65,6 @@ export function AutomationsBlock({ items, onProjectClick }: AutomationsBlockProp
 
   return (
     <div>
-      {/* Subheader */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="mb-8 px-[max(1.5rem,calc((100vw-64rem)/2+1.5rem))]"
-      >
-        <p className="mb-4 font-mono text-[12px] font-medium text-muted-foreground">
-          Automations & Tools
-        </p>
-        <div className="h-px bg-border" />
-      </motion.div>
-
       {/* Carousel */}
       <div className="relative">
         <button

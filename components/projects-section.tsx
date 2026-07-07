@@ -46,8 +46,22 @@ export function ProjectsSection() {
         </h2>
       </motion.div>
 
+      {/* Featured Project label */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className="mb-5 px-[max(1.5rem,calc((100vw-64rem)/2+1.5rem))]"
+      >
+        <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.15em] font-semibold text-[#1e3a5f]/70">
+          Featured Project
+        </p>
+        <div className="h-px bg-border" />
+      </motion.div>
+
       {/* Scale Sourcing — featured */}
-      <div className="mb-12 mx-auto max-w-7xl px-8 lg:px-16">
+      <div className="mb-16 mx-auto max-w-7xl px-8 lg:px-16">
         <ScaleSourcingFeature
           project={scaleSourcing}
           employer={hexaEmployer}
@@ -55,7 +69,21 @@ export function ProjectsSection() {
         />
       </div>
 
-      {/* Automations & Tools */}
+      {/* Automations & Tools label */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className="mb-5 px-[max(1.5rem,calc((100vw-64rem)/2+1.5rem))]"
+      >
+        <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.15em] font-semibold text-[#1e3a5f]/70">
+          Automations & Tools
+        </p>
+        <div className="h-px bg-border" />
+      </motion.div>
+
+      {/* Automations carousel */}
       <AutomationsBlock
         items={automationItems}
         onProjectClick={openModal}

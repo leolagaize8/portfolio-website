@@ -162,10 +162,6 @@ export function ScaleSourcingFeature({ project, onOpen }: ScaleSourcingFeaturePr
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="mb-8 font-mono text-[11px] uppercase tracking-widest text-white/25">
-              Hexa Scale · Sourcing Platform
-            </p>
-
             <h3 className="mb-5 font-heading text-[clamp(2.2rem,4vw,3.6rem)] font-extrabold leading-[0.95] tracking-tight text-white">
               Scale<br />Sourcing
             </h3>
